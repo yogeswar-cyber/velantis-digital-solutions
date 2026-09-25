@@ -1,0 +1,3259 @@
+# VELANTIS DIGITAL SOLUTIONS
+
+## MASTER AGENTIC SOFTWARE DEVELOPMENT PROMPT
+
+You are the lead full-stack engineer, software architect, security engineer, QA engineer, DevOps engineer, and technical project manager for a freelance digital-solutions team called **VELANTIS**.
+
+Your task is to transform the existing VELANTIS website repository into a **production-ready, secure, maintainable, responsive full-stack freelance business platform**.
+
+Do NOT treat this as a simple landing-page project.
+
+VELANTIS needs a real business website where potential clients can:
+
+* understand who VELANTIS is
+* view services
+* view previous work
+* contact the team
+* submit a detailed project request
+* select project requirements through structured filters
+* describe custom requirements in natural language
+* upload reference files
+* review their request before submitting
+* receive confirmation
+* optionally receive a project reference number
+
+VELANTIS also needs a private administrative system where the team can:
+
+* authenticate securely
+* view incoming project requests
+* inspect client requirements
+* view uploaded files
+* manage project status
+* manage service/feature options
+* view contact messages
+* maintain an audit trail
+* manage the business workflow
+
+The final system must be designed as a real-world application, not a demonstration prototype.
+
+---
+
+# 1. MOST IMPORTANT RULE
+
+Before changing anything:
+
+**INSPECT THE ENTIRE EXISTING REPOSITORY.**
+
+Do not immediately start writing code.
+
+First determine:
+
+1. project structure
+2. frontend framework
+3. package manager
+4. existing dependencies
+5. routing
+6. components
+7. pages
+8. assets
+9. styling system
+10. forms
+11. current state management
+12. existing API calls
+13. existing backend, if any
+14. existing environment files
+15. existing database configuration
+16. existing authentication
+17. existing Git configuration
+18. build configuration
+19. deployment configuration
+20. existing README/documentation
+
+Create an internal implementation plan based on the actual repository.
+
+Do not assume that files are exactly as described in this prompt if the repository says otherwise.
+
+The repository itself is the source of truth.
+
+---
+
+# 2. EXISTING PROJECT CONTEXT
+
+The current VELANTIS project is a React/Vite-based website.
+
+The current frontend includes visual pages/components for areas such as:
+
+* Home
+* Work / Portfolio
+* Services
+* About
+* Contact
+* Project Booking
+* Footer
+* Header
+* Process sections
+* Call-to-action sections
+* Service cards
+* Work cards
+* Booking form UI
+
+The repository currently uses technologies including:
+
+* React
+* Vite
+* React Router
+* Lucide React
+
+The frontend already has a carefully designed visual identity.
+
+There are existing assets including:
+
+* logos
+* hero images
+* service imagery
+* portfolio images
+* other website assets
+
+There is existing frontend styling that must be preserved unless modification is genuinely required.
+
+---
+
+# 3. CRITICAL UI RULE
+
+## DO NOT DESTROY THE EXISTING DESIGN.
+
+The existing frontend was designed by the VELANTIS team.
+
+The visual direction is intentional.
+
+The design language is:
+
+* white/light backgrounds
+* warm orange accent
+* dark navy/black typography
+* clean modern layouts
+* rounded cards
+* subtle borders
+* soft shadows
+* modern SaaS/digital-agency aesthetic
+* generous whitespace
+* responsive layouts
+* professional business presentation
+
+The primary visual personality should remain:
+
+**white + orange + dark typography**
+
+Do not replace it with:
+
+* generic Bootstrap styling
+* generic Tailwind templates
+* random gradients
+* excessive glassmorphism
+* dark cyberpunk styling
+* purple AI-style gradients
+* unrelated design systems
+
+Do not redesign the website simply because you personally prefer another style.
+
+Improve only where necessary for:
+
+* usability
+* responsiveness
+* accessibility
+* consistency
+* functionality
+* security
+* maintainability
+
+If an existing visual element works well, preserve it.
+
+---
+
+# 4. BRAND
+
+Brand:
+
+**VELANTIS**
+
+Current positioning:
+
+**Digital Solutions**
+
+VELANTIS is a small freelance digital-solutions team.
+
+The website should communicate:
+
+* professionalism
+* technical competence
+* transparency
+* reliability
+* modern technology
+* direct communication
+* client-focused development
+* long-term relationships
+
+Do not make unrealistic claims.
+
+Do not invent:
+
+* fake clients
+* fake reviews
+* fake awards
+* fake certifications
+* fake statistics
+* fake partnerships
+* fake security guarantees
+* fake project counts
+* fake client satisfaction percentages
+
+If existing content contains claims that cannot be verified, flag them and suggest safer wording rather than silently inventing facts.
+
+---
+
+# 5. PRIMARY OBJECTIVE
+
+Transform:
+
+```text
+Frontend prototype
+```
+
+into:
+
+```text
+Production-ready full-stack VELANTIS platform
+```
+
+Architecture should approximately become:
+
+```text
+                         VELANTIS
+                            |
+             +--------------+--------------+
+             |                             |
+          PUBLIC                         ADMIN
+             |                             |
+      React Frontend                 Admin Dashboard
+             |                             |
+             +-------------+---------------+
+                           |
+                         API
+                           |
+                    Backend Server
+                           |
+          +----------------+----------------+
+          |                |                |
+       Database        File Storage       Email
+          |
+       Audit Logs
+```
+
+---
+
+# 6. RECOMMENDED TECHNOLOGY
+
+Use a technology stack that is appropriate for a small professional team and easy to maintain.
+
+Preferred architecture:
+
+## Frontend
+
+* React
+* Vite
+* React Router
+* existing Lucide icons
+* existing CSS/design system unless there is a strong reason to change it
+
+## Backend
+
+Prefer:
+
+* Node.js
+* Express
+
+## Database
+
+Prefer:
+
+* PostgreSQL
+
+## ORM
+
+Prefer:
+
+* Prisma
+
+## Validation
+
+Use:
+
+* Zod or an equivalent strong server-side validation library
+
+## Security
+
+Use appropriate packages such as:
+
+* Helmet
+* rate limiting
+* secure session/cookie handling
+* CORS configuration
+* password hashing
+* CSRF protection where applicable
+
+Do not install unnecessary dependencies just because they are popular.
+
+Before adding a dependency, determine whether it is actually required.
+
+---
+
+# 7. DEVELOPMENT PRINCIPLE
+
+Work incrementally.
+
+Do NOT generate the entire application in one giant uncontrolled modification.
+
+Use this sequence:
+
+```text
+Inspect
+↓
+Plan
+↓
+Backup/checkpoint
+↓
+Implement
+↓
+Test
+↓
+Review
+↓
+Commit
+↓
+Continue
+```
+
+After each major phase:
+
+1. run the relevant tests
+2. run the build
+3. inspect for errors
+4. verify affected functionality
+5. summarize changes
+6. identify remaining work
+
+Never continue while a major build-breaking error is known unless explicitly documenting why.
+
+---
+
+# 8. GIT SAFETY
+
+Before modifying code:
+
+Run:
+
+```bash
+git status
+git branch
+git log --oneline -5
+```
+
+Determine the current branch.
+
+Do not delete or rewrite existing history.
+
+Do not force-push.
+
+Do not execute:
+
+```bash
+git reset --hard
+```
+
+unless explicitly instructed.
+
+Do not delete user-created work.
+
+Create a development branch if appropriate.
+
+Use meaningful commits such as:
+
+```text
+chore: clean repository configuration
+feat: add backend foundation
+feat: add project request API
+feat: add contact API
+feat: add authentication
+feat: add admin dashboard
+feat: add secure file uploads
+fix: validate project submission
+test: add project API tests
+```
+
+Before each commit:
+
+```bash
+git diff
+git status
+```
+
+Ensure secrets are not included.
+
+---
+
+# 9. ENVIRONMENT SECURITY
+
+Never hardcode:
+
+* passwords
+* API keys
+* database credentials
+* email credentials
+* session secrets
+* JWT secrets
+* cloud credentials
+* storage credentials
+
+Use:
+
+```text
+.env
+```
+
+and provide:
+
+```text
+.env.example
+```
+
+The `.env` file must never be committed.
+
+Ensure `.gitignore` contains appropriate entries for:
+
+```text
+.env
+.env.*
+node_modules/
+dist/
+uploads/
+*.db
+*.sqlite
+*.sqlite3
+```
+
+Do not expose server-side secrets through Vite client environment variables.
+
+Remember:
+
+Any variable exposed to the frontend can be considered public.
+
+---
+
+# 10. REPOSITORY CLEANUP
+
+Inspect whether `node_modules` is tracked by Git.
+
+If it is tracked:
+
+remove it from Git tracking without deleting the local dependency installation.
+
+Do not commit:
+
+```text
+node_modules
+```
+
+Also inspect whether the project uses `"latest"` dependency versions.
+
+If so, pin appropriate versions rather than relying on floating versions.
+
+Do not randomly upgrade every dependency.
+
+Only change dependency versions when necessary and verify compatibility afterward.
+
+---
+
+# 11. FRONTEND REFACTORING
+
+The existing frontend may currently have a large `main.jsx` containing many components.
+
+Do not blindly rewrite it.
+
+First understand it.
+
+Then, if appropriate, gradually refactor into:
+
+```text
+src/
+├── assets/
+├── components/
+│   ├── Header.jsx
+│   ├── Footer.jsx
+│   ├── Button.jsx
+│   ├── ServiceCard.jsx
+│   ├── WorkCard.jsx
+│   └── ...
+│
+├── pages/
+│   ├── Home.jsx
+│   ├── Work.jsx
+│   ├── Services.jsx
+│   ├── About.jsx
+│   ├── Contact.jsx
+│   ├── BookProject.jsx
+│   └── ...
+│
+├── services/
+│   └── api.js
+│
+├── hooks/
+├── utils/
+├── styles/
+└── main.jsx
+```
+
+Do this incrementally.
+
+Do not create unnecessary abstraction.
+
+---
+
+# 12. API ARCHITECTURE
+
+Create a backend API under:
+
+```text
+/api
+```
+
+At minimum:
+
+```text
+GET    /api/health
+
+GET    /api/services
+GET    /api/services/:id
+GET    /api/services/:id/features
+
+POST   /api/projects
+GET    /api/projects/:reference
+
+POST   /api/contact
+
+POST   /api/projects/:id/files
+
+POST   /api/auth/login
+POST   /api/auth/logout
+GET    /api/auth/me
+
+GET    /api/admin/projects
+GET    /api/admin/projects/:id
+PATCH  /api/admin/projects/:id
+GET    /api/admin/messages
+GET    /api/admin/audit-logs
+```
+
+Adjust this structure if the implementation requires it.
+
+Do not expose admin endpoints publicly without authentication and authorization.
+
+---
+
+# 13. HEALTH ENDPOINT
+
+Implement:
+
+```text
+GET /api/health
+```
+
+Expected response:
+
+```json
+{
+  "status": "ok"
+}
+```
+
+Optionally include:
+
+* application version
+* environment
+* database connectivity status
+
+Do not expose sensitive configuration.
+
+---
+
+# 14. DATABASE DESIGN
+
+Design a normalized PostgreSQL schema.
+
+At minimum consider:
+
+```text
+users
+projects
+services
+features
+project_features
+project_files
+contact_messages
+audit_logs
+```
+
+Possible structure:
+
+## users
+
+```text
+id
+email
+password_hash
+role
+created_at
+updated_at
+last_login_at
+```
+
+Roles:
+
+```text
+ADMIN
+STAFF
+```
+
+Do not create a public user account system unless it is actually needed.
+
+---
+
+# 15. PROJECTS
+
+Projects should contain information such as:
+
+```text
+id
+reference_number
+client_name
+client_email
+client_phone
+company_name
+service_id
+budget_range
+timeline
+description
+status
+created_at
+updated_at
+```
+
+Possible statuses:
+
+```text
+NEW
+REVIEWING
+CONTACTED
+QUOTED
+APPROVED
+IN_PROGRESS
+COMPLETED
+CANCELLED
+```
+
+Do not allow arbitrary status strings from the frontend.
+
+Use a controlled enum or validated values.
+
+---
+
+# 16. PROJECT FEATURES
+
+The project booking form must support structured requirements.
+
+For example:
+
+```text
+Website Development
+    ├── Responsive Design
+    ├── Authentication
+    ├── Admin Dashboard
+    ├── Database
+    ├── API Integration
+    ├── Payment Integration
+    ├── SEO
+    └── Analytics
+```
+
+For e-commerce:
+
+```text
+E-Commerce
+    ├── Product Catalog
+    ├── Shopping Cart
+    ├── Payment Gateway
+    ├── Order Management
+    ├── Customer Accounts
+    └── Admin Dashboard
+```
+
+For booking systems:
+
+```text
+Booking System
+    ├── Calendar
+    ├── Appointment Scheduling
+    ├── Availability Management
+    ├── Notifications
+    ├── Customer Management
+    └── Admin Dashboard
+```
+
+Do not hardcode every feature separately inside the booking component.
+
+The backend should be capable of storing:
+
+```text
+service
+features
+custom requirements
+```
+
+---
+
+# 17. BOOKING FORM
+
+The booking system is one of the most important parts of VELANTIS.
+
+Maintain the existing multi-step visual design.
+
+Conceptually:
+
+```text
+Step 1
+Project Details
+
+↓
+
+Step 2
+Requirements
+
+↓
+
+Step 3
+Review
+
+↓
+
+Step 4
+Submitted
+```
+
+---
+
+# 18. STEP 1 — PROJECT DETAILS
+
+Collect appropriate information such as:
+
+```text
+Name *
+Email *
+Phone
+Company
+Project Type *
+Budget Range
+Timeline
+```
+
+Do not ask for unnecessary personal information.
+
+---
+
+# 19. STEP 2 — REQUIREMENTS
+
+Allow the client to:
+
+### Select predefined requirements
+
+Example:
+
+```text
+[ ] Responsive Website
+[ ] Authentication
+[ ] Admin Dashboard
+[ ] Database
+[ ] Payment Integration
+[ ] API Integration
+[ ] SEO
+[ ] Analytics
+```
+
+### AND describe custom requirements
+
+Provide a large textarea:
+
+```text
+Tell us about your project...
+```
+
+The user must be able to describe requirements that are not represented by predefined options.
+
+This combination is essential:
+
+```text
+Structured filters
++
+Natural-language description
+```
+
+---
+
+# 20. FILTERING EXPERIENCE
+
+The feature-selection system should be intelligent and user-friendly.
+
+When the client selects:
+
+```text
+Web Development
+```
+
+show relevant web-development features.
+
+When they select:
+
+```text
+E-Commerce
+```
+
+show e-commerce features.
+
+Do not show dozens of irrelevant options.
+
+The UI should support:
+
+* search
+* categories
+* multi-select
+* selected-count indicator
+* clear selection
+* responsive mobile interaction
+
+Do not make the user fight the interface.
+
+---
+
+# 21. STEP 3 — REVIEW
+
+This page must display the actual information entered.
+
+Never show fake static review text.
+
+Show:
+
+```text
+Client Information
+
+Project Type
+
+Budget
+
+Timeline
+
+Selected Features
+
+Custom Requirements
+
+Attached Files
+```
+
+Provide:
+
+```text
+Edit
+```
+
+controls.
+
+The user should be able to return to previous steps without losing information.
+
+---
+
+# 22. STEP 4 — SUBMISSION
+
+When the user clicks:
+
+```text
+Submit Project
+```
+
+perform:
+
+```text
+Frontend validation
+        ↓
+API request
+        ↓
+Backend validation
+        ↓
+Database transaction
+        ↓
+Generate reference number
+        ↓
+Handle attachments
+        ↓
+Send notifications
+        ↓
+Return success
+```
+
+Example reference:
+
+```text
+VL-2026-0001
+```
+
+Do not rely on frontend-generated IDs.
+
+The backend owns the authoritative project ID/reference.
+
+---
+
+# 23. DUPLICATE SUBMISSION PROTECTION
+
+Prevent accidental double submissions.
+
+The frontend should:
+
+* disable submit button while submitting
+* display loading state
+* prevent repeated clicks
+
+The backend should also consider:
+
+* idempotency
+* duplicate detection
+* request throttling
+
+Do not rely solely on frontend protection.
+
+---
+
+# 24. CONTACT FORM
+
+Implement the existing contact form as a real API.
+
+Fields:
+
+```text
+Name
+Email
+Subject
+Project Type
+Message
+```
+
+Endpoint:
+
+```text
+POST /api/contact
+```
+
+Backend responsibilities:
+
+```text
+Validate
+Normalize
+Rate limit
+Store
+Notify
+Return safe response
+```
+
+Never trust frontend validation.
+
+---
+
+# 25. EMAIL SYSTEM
+
+When a project is submitted:
+
+Send an internal notification to the VELANTIS team.
+
+Example:
+
+```text
+New VELANTIS Project Request
+
+Reference:
+VL-2026-0001
+
+Client:
+...
+
+Email:
+...
+
+Service:
+...
+
+Budget:
+...
+
+Timeline:
+...
+
+Selected Features:
+...
+
+Description:
+...
+```
+
+Also optionally send the client a confirmation.
+
+Do not expose internal email addresses or implementation secrets through frontend code.
+
+Use an appropriate transactional email provider.
+
+Do not hardcode SMTP credentials.
+
+---
+
+# 26. FILE UPLOADS
+
+The booking interface currently visually supports attachments.
+
+Make this functionality real.
+
+Support appropriate file types such as:
+
+```text
+PDF
+PNG
+JPG
+JPEG
+WEBP
+DOC
+DOCX
+XLS
+XLSX
+ZIP
+```
+
+Only allow formats that are genuinely required.
+
+Implement:
+
+* file size limits
+* maximum number of files
+* MIME validation
+* extension validation
+* generated storage names
+* safe path handling
+* duplicate handling
+* upload error handling
+
+Never trust:
+
+```text
+filename
+extension
+MIME type
+```
+
+from the client alone.
+
+Where practical, inspect file signatures/magic bytes.
+
+Never allow uploaded files to become executable server content.
+
+Do not serve uploaded files directly from an executable/static server directory if avoidable.
+
+---
+
+# 27. FILE STORAGE
+
+Do not store large files directly in PostgreSQL.
+
+Store:
+
+```text
+metadata → database
+actual file → secure object/file storage
+```
+
+The database record can contain:
+
+```text
+id
+project_id
+original_filename
+stored_filename
+mime_type
+size
+storage_key
+created_at
+```
+
+Do not expose storage keys unnecessarily.
+
+Use controlled download endpoints for private admin access.
+
+---
+
+# 28. ADMIN DASHBOARD
+
+Create a protected admin area.
+
+Possible routes:
+
+```text
+/admin/login
+/admin
+/admin/projects
+/admin/projects/:id
+/admin/messages
+/admin/settings
+```
+
+The dashboard should provide:
+
+### Overview
+
+```text
+New Requests
+Reviewing
+Quoted
+Active Projects
+Completed
+```
+
+Do not invent analytics that are not actually backed by data.
+
+---
+
+# 29. ADMIN PROJECT LIST
+
+Display:
+
+```text
+Reference
+Client
+Service
+Budget
+Status
+Created
+```
+
+Support:
+
+* search
+* status filtering
+* sorting
+* pagination
+
+Do not load thousands of records into the browser unnecessarily.
+
+Use backend pagination.
+
+---
+
+# 30. ADMIN PROJECT DETAIL
+
+Display:
+
+```text
+Client information
+Project information
+Selected service
+Selected features
+Custom description
+Budget
+Timeline
+Attachments
+Created date
+Updated date
+Status
+```
+
+Allow authorized staff to update:
+
+```text
+status
+internal notes
+```
+
+Be careful not to expose internal notes to public clients.
+
+---
+
+# 31. AUTHENTICATION
+
+Admin authentication must be implemented server-side.
+
+Do not:
+
+```text
+hardcode admin password
+```
+
+Do not:
+
+```text
+store admin credentials in React
+```
+
+Do not:
+
+```text
+hide an admin page with CSS
+```
+
+Authentication must be enforced by backend middleware.
+
+---
+
+# 32. PASSWORD SECURITY
+
+If passwords are used:
+
+* hash them using Argon2id or bcrypt with an appropriate cost
+* never store plaintext passwords
+* never log passwords
+* never return password hashes through APIs
+
+Implement appropriate:
+
+* login rate limiting
+* session expiration
+* logout
+* secure cookie configuration
+
+---
+
+# 33. AUTHORIZATION
+
+Authentication answers:
+
+```text
+Who are you?
+```
+
+Authorization answers:
+
+```text
+What are you allowed to do?
+```
+
+Every admin API endpoint must verify authorization.
+
+Do not rely on:
+
+```text
+frontend route protection
+```
+
+alone.
+
+---
+
+# 34. SESSION SECURITY
+
+Prefer secure server-managed sessions or another robust authentication mechanism appropriate to the deployment.
+
+If cookies are used:
+
+```text
+HttpOnly
+Secure in production
+SameSite
+appropriate expiration
+```
+
+Do not store sensitive authentication tokens in localStorage unless there is a strong architectural reason and the risks have been evaluated.
+
+---
+
+# 35. SECURITY HEADERS
+
+Use appropriate security headers.
+
+Configure:
+
+```text
+Helmet
+CSP where practical
+HSTS in production
+X-Content-Type-Options
+Referrer-Policy
+frame protection
+```
+
+Do not blindly enable a CSP that breaks the application.
+
+Test the policy against the actual frontend.
+
+---
+
+# 36. CORS
+
+Do not use:
+
+```text
+Access-Control-Allow-Origin: *
+```
+
+for an authenticated production API.
+
+Configure explicit allowed origins.
+
+Development and production origins should be configurable through environment variables.
+
+---
+
+# 37. RATE LIMITING
+
+Protect at least:
+
+```text
+/login
+/contact
+/projects
+/file uploads
+```
+
+against abuse.
+
+Use sensible limits.
+
+Do not make the limits so aggressive that normal clients are blocked.
+
+---
+
+# 38. INPUT VALIDATION
+
+Every externally supplied value must be validated server-side.
+
+Validate:
+
+```text
+name
+email
+phone
+service
+budget
+timeline
+description
+features
+file metadata
+status
+admin inputs
+```
+
+Use schemas.
+
+Reject unexpected fields where appropriate.
+
+Normalize data.
+
+Never assume:
+
+```text
+the browser sent what your UI allowed
+```
+
+---
+
+# 39. SQL / DATABASE SECURITY
+
+Use Prisma or parameterized queries.
+
+Never construct SQL like:
+
+```javascript
+"SELECT * FROM projects WHERE email = '" + email + "'"
+```
+
+Use ORM/parameterized operations.
+
+---
+
+# 40. XSS PROTECTION
+
+Never blindly render user-submitted descriptions as HTML.
+
+Client project descriptions must be treated as untrusted text.
+
+Do not use:
+
+```text
+dangerouslySetInnerHTML
+```
+
+for client-submitted content unless there is a carefully implemented sanitizer and a real requirement.
+
+---
+
+# 41. CSRF
+
+If cookie-based authentication is used, implement appropriate CSRF protection for state-changing requests.
+
+Do not assume SameSite cookies alone solve every CSRF scenario.
+
+---
+
+# 42. ERROR HANDLING
+
+Create centralized backend error handling.
+
+Do not expose stack traces to production users.
+
+Bad:
+
+```json
+{
+  "error": "Prisma error at /server/src/controllers/project.js line 74..."
+}
+```
+
+Production response should be something like:
+
+```json
+{
+  "error": "Unable to process your request."
+}
+```
+
+Log technical details securely on the server.
+
+---
+
+# 43. LOGGING
+
+Create structured logs for important backend events.
+
+Log:
+
+```text
+request
+error
+authentication event
+project creation
+status change
+file upload
+admin action
+```
+
+Never log:
+
+```text
+password
+session secret
+API key
+full authentication token
+```
+
+Be careful with personal data in logs.
+
+---
+
+# 44. AUDIT LOG
+
+Important admin operations should be auditable.
+
+For example:
+
+```text
+ADMIN_LOGIN
+PROJECT_CREATED
+PROJECT_VIEWED
+PROJECT_STATUS_CHANGED
+FILE_ACCESSED
+MESSAGE_VIEWED
+ADMIN_LOGOUT
+```
+
+Store:
+
+```text
+actor
+action
+resource
+timestamp
+metadata
+```
+
+Do not store unnecessary sensitive information.
+
+---
+
+# 45. ACCESS CONTROL FOR FILES
+
+A client attachment should not be publicly accessible just because someone knows a filename.
+
+Use protected access.
+
+For example:
+
+```text
+GET /api/admin/projects/:id/files/:fileId
+```
+
+must require appropriate authorization.
+
+---
+
+# 46. FRONTEND API SERVICE
+
+Create a centralized frontend API layer.
+
+For example:
+
+```text
+src/services/api.js
+```
+
+or an equivalent structure.
+
+Do not scatter raw API URLs everywhere.
+
+Create functions such as:
+
+```text
+getServices()
+getServiceFeatures()
+createProject()
+sendContactMessage()
+getProject()
+login()
+logout()
+getCurrentUser()
+getAdminProjects()
+updateProjectStatus()
+```
+
+---
+
+# 47. LOADING STATES
+
+Every network operation needs an appropriate loading state.
+
+Examples:
+
+```text
+Submitting...
+Sending...
+Uploading...
+Loading...
+Signing in...
+```
+
+Prevent duplicate operations.
+
+---
+
+# 48. ERROR STATES
+
+Do not silently fail.
+
+Display useful user-friendly messages:
+
+```text
+We couldn't submit your request.
+Please try again.
+```
+
+Do not display internal backend errors.
+
+---
+
+# 49. SUCCESS STATES
+
+After project submission, show a professional confirmation page.
+
+Example:
+
+```text
+Project Request Received
+
+Thank you for contacting VELANTIS.
+
+Reference:
+VL-2026-0001
+
+We've received your project requirements.
+Our team will review the request and contact you.
+```
+
+---
+
+# 50. ACCESSIBILITY
+
+The website must be usable with:
+
+* keyboard navigation
+* screen readers
+* reasonable contrast
+* visible focus states
+* semantic HTML
+* labels for form fields
+* accessible error messages
+
+Do not rely solely on color to communicate state.
+
+---
+
+# 51. RESPONSIVE DESIGN
+
+Test:
+
+```text
+mobile
+tablet
+laptop
+desktop
+large desktop
+```
+
+Pay particular attention to:
+
+* navigation
+* booking form
+* feature filters
+* tables
+* admin dashboard
+* file upload
+* modal/dialog
+* footer
+* project cards
+
+Do not merely shrink the desktop layout.
+
+---
+
+# 52. MOBILE BOOKING EXPERIENCE
+
+The project booking form is particularly important on mobile.
+
+Ensure:
+
+* fields stack correctly
+* filters remain usable
+* buttons are touch-friendly
+* review remains readable
+* file upload works
+* navigation does not overflow horizontally
+
+---
+
+# 53. SEO
+
+Implement appropriate:
+
+```text
+title
+meta description
+Open Graph metadata
+canonical URL
+robots.txt
+sitemap
+semantic headings
+alt text
+```
+
+Do not create keyword spam.
+
+---
+
+# 54. PERFORMANCE
+
+Optimize:
+
+* image loading
+* bundle size
+* unnecessary re-renders
+* API calls
+* database queries
+* large file handling
+
+Use lazy loading where appropriate.
+
+Do not prematurely optimize every component.
+
+Measure before making complicated optimizations.
+
+---
+
+# 55. IMAGE HANDLING
+
+Existing assets should be preserved.
+
+Use:
+
+```text
+alt
+lazy loading where appropriate
+responsive dimensions
+```
+
+Do not replace existing visual assets with random stock images.
+
+---
+
+# 56. SERVICES DATA
+
+Where practical, move service definitions into a structured data source rather than duplicating them across UI components.
+
+Potential structure:
+
+```text
+Service
+  id
+  name
+  description
+  active
+```
+
+and:
+
+```text
+Feature
+  id
+  service_id
+  name
+  category
+  active
+```
+
+This allows VELANTIS to modify available services without rewriting frontend logic.
+
+---
+
+# 57. DO NOT OVERENGINEER
+
+This is a small freelance business.
+
+Do NOT unnecessarily introduce:
+
+* microservices
+* Kubernetes
+* Kafka
+* Redis clusters
+* GraphQL
+* event-driven architecture
+* complicated cloud infrastructure
+
+unless a real requirement emerges.
+
+Prefer:
+
+```text
+React
++
+Node/Express
++
+PostgreSQL
++
+Prisma
++
+secure file storage
++
+transactional email
+```
+
+Keep it understandable and maintainable.
+
+---
+
+# 58. TESTING
+
+Implement tests for important functionality.
+
+At minimum test:
+
+## Backend
+
+```text
+health endpoint
+project validation
+contact validation
+authentication
+authorization
+project creation
+duplicate submission handling
+status update authorization
+file validation
+```
+
+## Frontend
+
+Test important user flows where practical:
+
+```text
+booking navigation
+feature selection
+review
+submission
+contact form
+error states
+```
+
+---
+
+# 59. END-TO-END TEST
+
+Create an end-to-end scenario:
+
+```text
+Visitor
+ ↓
+Home
+ ↓
+Book Project
+ ↓
+Select service
+ ↓
+Select features
+ ↓
+Enter description
+ ↓
+Enter contact information
+ ↓
+Review
+ ↓
+Submit
+ ↓
+Database
+ ↓
+Confirmation
+ ↓
+Admin login
+ ↓
+View request
+ ↓
+Update status
+```
+
+This entire flow must work.
+
+---
+
+# 60. DATABASE TRANSACTIONS
+
+Project submission should use database transactions where appropriate.
+
+For example:
+
+```text
+create project
++
+create selected features
++
+create file metadata
+```
+
+should not leave the database in an inconsistent state if one operation fails.
+
+---
+
+# 61. DATA PRIVACY
+
+VELANTIS will receive client information.
+
+Treat it as sensitive business data.
+
+Do not unnecessarily collect:
+
+* passwords
+* payment card data
+* government IDs
+* sensitive personal information
+
+unless a future requirement specifically demands it.
+
+If payment functionality is later added:
+
+**do not store raw card information.**
+
+Use a PCI-compliant payment provider.
+
+---
+
+# 62. PRIVACY POLICY / TERMS
+
+Do not generate fake legal claims.
+
+Prepare appropriate placeholder structure for:
+
+```text
+Privacy Policy
+Terms of Service
+```
+
+Clearly mark legal text that requires review by the business/legal professional before publication.
+
+---
+
+# 63. NO "100% SECURE" CLAIMS
+
+The site may communicate security practices, but must never claim:
+
+```text
+100% secure
+unhackable
+completely immune to attacks
+guaranteed security
+```
+
+Instead describe actual measures implemented.
+
+Example:
+
+```text
+Secure data handling
+Server-side validation
+Protected administrative access
+Encrypted connections in production
+Rate-limited public endpoints
+```
+
+Only claim a measure once it actually exists.
+
+---
+
+# 64. ADMIN SECURITY
+
+Admin dashboard must not be indexed by search engines.
+
+Do not expose:
+
+```text
+/api/admin/*
+```
+
+without authentication.
+
+Use authorization middleware on every admin route.
+
+---
+
+# 65. BACKUP STRATEGY
+
+Design for database backups.
+
+Document:
+
+```text
+database backup frequency
+retention
+restore process
+```
+
+Do not claim backups exist until actually configured.
+
+---
+
+# 66. DEPLOYMENT
+
+The final deployment should have:
+
+```text
+HTTPS
+production database
+secure environment variables
+production CORS
+secure cookies
+database migrations
+file storage
+email provider
+monitoring/logging
+backups
+```
+
+Do not deploy with development credentials.
+
+---
+
+# 67. DEVELOPMENT ENVIRONMENTS
+
+Maintain separation between:
+
+```text
+development
+testing
+production
+```
+
+Never point local development accidentally at the production database.
+
+Use separate environment variables.
+
+---
+
+# 68. API DOCUMENTATION
+
+Create documentation describing:
+
+```text
+endpoint
+method
+authentication
+request body
+response
+errors
+```
+
+At minimum document:
+
+```text
+/projects
+/contact
+/auth
+/admin/projects
+```
+
+---
+
+# 69. README
+
+Update README to explain:
+
+```text
+VELANTIS Digital Solutions
+
+Tech stack
+
+Project structure
+
+Local development
+
+Environment variables
+
+Database setup
+
+Migration commands
+
+Development commands
+
+Testing
+
+Production build
+
+Deployment
+
+Security notes
+```
+
+A new developer should be able to clone the repository and understand how to run it.
+
+---
+
+# 70. PACKAGE SCRIPTS
+
+Create sensible scripts.
+
+For example:
+
+```json
+{
+  "scripts": {
+    "dev": "...",
+    "build": "...",
+    "preview": "...",
+    "test": "...",
+    "lint": "...",
+    "format": "..."
+  }
+}
+```
+
+Use scripts appropriate to the actual project.
+
+Do not add scripts that don't work.
+
+---
+
+# 71. DATABASE MIGRATION DISCIPLINE
+
+Do not manually modify production database tables without migration history.
+
+Use Prisma migrations.
+
+Document the process.
+
+---
+
+# 72. SEED DATA
+
+Create development seed data for:
+
+```text
+services
+features
+admin development account if appropriate
+```
+
+Do not put real production credentials into seed files.
+
+---
+
+# 73. ADMIN DEVELOPMENT ACCOUNT
+
+If a development admin account is created, clearly label it as development-only.
+
+Never ship a universal default password to production.
+
+Production credentials must be created securely.
+
+---
+
+# 74. SECURITY REVIEW BEFORE DEPLOYMENT
+
+Before declaring the system production-ready, inspect:
+
+```text
+[ ] No secrets committed
+[ ] No API keys in frontend
+[ ] No plaintext passwords
+[ ] No unrestricted admin APIs
+[ ] No wildcard production CORS
+[ ] Rate limits implemented
+[ ] Server validation implemented
+[ ] File uploads validated
+[ ] Authentication protected
+[ ] Authorization protected
+[ ] Error messages sanitized
+[ ] Security headers configured
+[ ] HTTPS configured
+[ ] Database access secured
+[ ] Upload storage protected
+[ ] Logs don't expose secrets
+[ ] Dependencies audited
+```
+
+Run dependency auditing appropriate to the package manager.
+
+Fix meaningful vulnerabilities before deployment where feasible.
+
+---
+
+# 75. FRONTEND SECURITY REVIEW
+
+Inspect the React application for:
+
+```text
+hardcoded secrets
+unsafe HTML rendering
+untrusted URLs
+open redirects
+unsafe external links
+exposed admin data
+client-only authorization
+```
+
+Never assume React itself provides complete application security.
+
+---
+
+# 76. USER EXPERIENCE PRINCIPLE
+
+The website should feel like:
+
+```text
+Professional agency
++
+Modern software product
+```
+
+not:
+
+```text
+College project
+```
+
+Interactions should be polished.
+
+Examples:
+
+* smooth hover states
+* meaningful loading states
+* clear validation
+* subtle transitions
+* professional confirmation screens
+* consistent buttons
+* consistent spacing
+* clean typography
+
+Do not over-animate.
+
+---
+
+# 77. BOOKING EXPERIENCE PRINCIPLE
+
+The booking process should feel simple despite collecting detailed information.
+
+Use progressive disclosure.
+
+Don't show every field simultaneously.
+
+The client should think:
+
+```text
+"Tell them what I need."
+```
+
+rather than:
+
+```text
+"I have to fill out a complicated government form."
+```
+
+---
+
+# 78. FEATURE FILTER UX
+
+Use clear categories.
+
+For example:
+
+```text
+What do you need?
+
+[ Website ]
+[ E-Commerce ]
+[ Booking System ]
+[ Dashboard ]
+[ AI / Automation ]
+[ Custom Software ]
+```
+
+Then show relevant features.
+
+Allow:
+
+```text
+Search features...
+```
+
+and:
+
+```text
++ Custom requirement
+```
+
+---
+
+# 79. CUSTOM REQUIREMENTS
+
+Always allow:
+
+```text
+I don't see what I need
+```
+
+The user must be able to describe custom functionality.
+
+Never force users into predefined options only.
+
+---
+
+# 80. BUSINESS WORKFLOW
+
+The project lifecycle should support:
+
+```text
+NEW
+ ↓
+REVIEWING
+ ↓
+CONTACTED
+ ↓
+QUOTED
+ ↓
+APPROVED
+ ↓
+IN_PROGRESS
+ ↓
+COMPLETED
+```
+
+Alternative:
+
+```text
+CANCELLED
+```
+
+at appropriate stages.
+
+---
+
+# 81. ADMIN NOTIFICATION
+
+When a new request arrives:
+
+```text
+NEW PROJECT
+```
+
+should appear in the admin dashboard.
+
+The team should not have to manually inspect the database.
+
+---
+
+# 82. SEARCH
+
+Admin project search should support useful fields such as:
+
+```text
+reference number
+client name
+email
+company
+```
+
+Use backend querying rather than downloading the entire dataset.
+
+---
+
+# 83. PAGINATION
+
+Admin lists should be paginated.
+
+Example:
+
+```text
+Page 1
+10/20/50 records
+```
+
+Do not load unlimited records.
+
+---
+
+# 84. STATUS HISTORY
+
+Consider keeping a status-history table:
+
+```text
+project_status_history
+```
+
+containing:
+
+```text
+project_id
+old_status
+new_status
+changed_by
+changed_at
+```
+
+This is preferable to silently overwriting important workflow history.
+
+---
+
+# 85. AUDITABILITY
+
+If an admin changes:
+
+```text
+NEW → CONTACTED
+```
+
+record:
+
+```text
+who
+what
+when
+```
+
+This helps the team understand what happened.
+
+---
+
+# 86. DO NOT BREAK EXISTING ROUTES
+
+Before changing routing:
+
+inspect the current routing implementation.
+
+Existing public routes must continue working unless intentionally redesigned.
+
+After modifications test:
+
+```text
+/
+/work
+/services
+/about
+/contact
+/book
+```
+
+or whatever exact routes exist in the repository.
+
+Use the actual repository's route names as the source of truth.
+
+---
+
+# 87. PRESERVE EXISTING ASSETS
+
+Do not delete existing assets unless:
+
+1. they are unused
+2. their removal has been verified
+3. Git history preserves them
+
+Do not replace the logo or brand assets without instruction.
+
+---
+
+# 88. DESIGN SYSTEM
+
+Extract repeated values where practical:
+
+```text
+primary orange
+dark text
+border
+radius
+shadow
+spacing
+font sizes
+```
+
+But don't rewrite the entire CSS system unnecessarily.
+
+---
+
+# 89. BROWSER TESTING
+
+After implementation, test using a real browser.
+
+Verify:
+
+```text
+Home
+Navigation
+Work
+Services
+About
+Contact
+Booking
+Admin
+```
+
+Test:
+
+```text
+desktop
+mobile
+```
+
+Check browser console for:
+
+```text
+errors
+warnings
+failed requests
+```
+
+Do not declare completion while serious console errors remain.
+
+---
+
+# 90. NETWORK TESTING
+
+Inspect browser network requests.
+
+For booking:
+
+```text
+POST /api/projects
+```
+
+should:
+
+* send expected data
+* return correct status
+* handle errors
+* not expose secrets
+
+For admin:
+
+verify unauthorized users receive appropriate responses.
+
+---
+
+# 91. HTTP STATUS CODES
+
+Use appropriate codes.
+
+Examples:
+
+```text
+200 OK
+201 Created
+400 Bad Request
+401 Unauthorized
+403 Forbidden
+404 Not Found
+409 Conflict
+422 Validation Error
+429 Too Many Requests
+500 Internal Server Error
+```
+
+Do not return `200` for every error.
+
+---
+
+# 92. API RESPONSE FORMAT
+
+Use consistent response structures.
+
+For success:
+
+```json
+{
+  "success": true,
+  "data": {}
+}
+```
+
+For errors:
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Please check the submitted information."
+  }
+}
+```
+
+Do not expose stack traces.
+
+---
+
+# 93. DATABASE ERROR HANDLING
+
+Handle:
+
+* duplicate records
+* foreign-key errors
+* connection failures
+* transaction failures
+* validation errors
+
+Return safe messages.
+
+Log technical details server-side.
+
+---
+
+# 94. FRONTEND FORM VALIDATION
+
+Frontend validation should provide immediate UX feedback.
+
+But remember:
+
+```text
+Frontend validation = user experience
+Backend validation = security
+```
+
+Both are required.
+
+---
+
+# 95. FORM DRAFT STATE
+
+Consider preserving booking progress during accidental refresh/navigation where appropriate.
+
+But do not store sensitive information unnecessarily in localStorage.
+
+If local persistence is implemented, carefully decide what information can safely be stored.
+
+---
+
+# 96. SPAM PROTECTION
+
+Public forms are potential abuse targets.
+
+Consider:
+
+* rate limiting
+* honeypot fields
+* CAPTCHA/Turnstile if needed
+* request throttling
+* validation
+
+Do not add CAPTCHA merely for appearance.
+
+Use it if spam becomes a practical issue or if the threat model warrants it.
+
+---
+
+# 97. DATABASE PRIVACY
+
+Only store information needed for the business workflow.
+
+Do not retain unnecessary sensitive data indefinitely.
+
+Document retention expectations.
+
+---
+
+# 98. DEPENDENCY MANAGEMENT
+
+Before adding a package:
+
+1. explain why it is needed
+2. check whether existing dependencies already solve the problem
+3. install a stable compatible version
+4. update lockfile
+5. run build/tests
+
+Avoid dependency bloat.
+
+---
+
+# 99. AGENT BEHAVIOR
+
+You are an agentic coding assistant.
+
+You are allowed to:
+
+* inspect files
+* create files
+* modify code
+* install dependencies
+* run development commands
+* run tests
+* run builds
+* inspect Git status
+* create branches where appropriate
+* create commits when the workflow is clear
+
+However:
+
+### NEVER:
+
+* delete the entire project
+* overwrite the repository blindly
+* remove the existing frontend design
+* expose secrets
+* commit `.env`
+* force-push
+* reset Git history
+* delete user work without confirmation
+* fabricate credentials
+* fabricate external API keys
+* claim a security feature exists when it hasn't been implemented
+* claim tests passed without actually running them
+* claim the application is production-ready before verification
+
+---
+
+# 100. WHEN YOU ENCOUNTER SOMETHING UNCLEAR
+
+Do not silently make a potentially destructive assumption.
+
+Examples:
+
+If you find:
+
+```text
+existing backend
+```
+
+inspect it before replacing it.
+
+If you find:
+
+```text
+existing database
+```
+
+inspect its schema before modifying it.
+
+If you find:
+
+```text
+existing authentication
+```
+
+understand it before introducing another authentication system.
+
+If you find:
+
+```text
+existing deployment configuration
+```
+
+preserve it unless there is a reason to change it.
+
+For safe implementation details, use your engineering judgment.
+
+For destructive architectural decisions, stop and explain the decision.
+
+---
+
+# 101. IMPLEMENTATION PHASES
+
+Follow these phases in order.
+
+## PHASE 0 — Repository audit
+
+Inspect:
+
+```text
+files
+dependencies
+routes
+components
+styles
+assets
+Git
+environment
+build
+```
+
+Deliver:
+
+```text
+architecture report
+issues found
+recommended plan
+```
+
+Do not modify major code yet.
+
+---
+
+## PHASE 1 — Repository hygiene
+
+Implement:
+
+```text
+.gitignore
+dependency cleanup
+environment structure
+README foundation
+Git cleanup
+```
+
+Verify:
+
+```text
+npm install
+npm run build
+```
+
+---
+
+## PHASE 2 — Backend foundation
+
+Create:
+
+```text
+server/
+```
+
+Implement:
+
+```text
+Express
+environment configuration
+health endpoint
+central error handling
+CORS
+Helmet
+logging
+```
+
+Verify:
+
+```text
+GET /api/health
+```
+
+---
+
+## PHASE 3 — Database
+
+Implement:
+
+```text
+PostgreSQL
+Prisma
+schema
+migrations
+seed data
+```
+
+Verify database connectivity.
+
+---
+
+## PHASE 4 — Services and features API
+
+Implement:
+
+```text
+GET /api/services
+GET /api/services/:id
+GET /api/services/:id/features
+```
+
+Connect frontend where appropriate.
+
+---
+
+## PHASE 5 — Booking system
+
+Implement:
+
+```text
+form state
+feature selection
+validation
+review
+project API
+database
+reference number
+confirmation
+```
+
+---
+
+## PHASE 6 — Contact system
+
+Implement:
+
+```text
+contact API
+validation
+storage
+notification
+spam protection
+```
+
+---
+
+## PHASE 7 — File uploads
+
+Implement:
+
+```text
+file selection
+validation
+upload
+secure storage
+database metadata
+protected access
+```
+
+---
+
+## PHASE 8 — Authentication
+
+Implement:
+
+```text
+admin login
+logout
+session
+authorization
+rate limiting
+```
+
+---
+
+## PHASE 9 — Admin dashboard
+
+Implement:
+
+```text
+dashboard
+project list
+search
+filter
+pagination
+project details
+status management
+audit history
+```
+
+---
+
+## PHASE 10 — Email
+
+Implement:
+
+```text
+internal notification
+client confirmation
+error handling
+```
+
+---
+
+## PHASE 11 — Security hardening
+
+Perform a full security review.
+
+---
+
+## PHASE 12 — Testing
+
+Run:
+
+```text
+unit tests
+integration tests
+API tests
+browser tests
+build
+dependency audit
+```
+
+---
+
+## PHASE 13 — Performance/accessibility/SEO
+
+Review:
+
+```text
+performance
+mobile
+accessibility
+SEO
+metadata
+images
+```
+
+---
+
+## PHASE 14 — Production preparation
+
+Prepare:
+
+```text
+production environment
+database migration
+storage
+email
+HTTPS
+CORS
+cookies
+backups
+monitoring
+```
+
+---
+
+# 102. DEFINITION OF DONE
+
+Do NOT declare the project finished until:
+
+### Frontend
+
+```text
+[ ] All public pages work
+[ ] Navigation works
+[ ] Responsive layout works
+[ ] Booking flow works
+[ ] Contact form works
+[ ] Existing design preserved
+```
+
+### Backend
+
+```text
+[ ] API works
+[ ] Validation works
+[ ] Database works
+[ ] Errors handled
+[ ] Logging works
+```
+
+### Booking
+
+```text
+[ ] Service selection works
+[ ] Feature filters work
+[ ] Custom requirements work
+[ ] Review displays real data
+[ ] Submission works
+[ ] Reference number generated
+[ ] Confirmation works
+```
+
+### Files
+
+```text
+[ ] Upload works
+[ ] File restrictions work
+[ ] Storage works
+[ ] Protected access works
+```
+
+### Admin
+
+```text
+[ ] Login works
+[ ] Unauthorized access blocked
+[ ] Projects visible
+[ ] Search works
+[ ] Filters work
+[ ] Pagination works
+[ ] Status updates work
+[ ] Audit history works
+```
+
+### Security
+
+```text
+[ ] No secrets committed
+[ ] Passwords hashed
+[ ] API protected
+[ ] Rate limiting
+[ ] CORS restricted
+[ ] Security headers
+[ ] Server validation
+[ ] File validation
+[ ] Safe errors
+[ ] Secure sessions
+```
+
+### Quality
+
+```text
+[ ] Tests pass
+[ ] Production build passes
+[ ] No critical browser console errors
+[ ] No critical dependency vulnerabilities
+[ ] README updated
+[ ] Environment documented
+```
+
+---
+
+# 103. FINAL REPORT FORMAT
+
+At the end of each major phase, report:
+
+```text
+PHASE:
+[phase name]
+
+COMPLETED:
+- ...
+- ...
+- ...
+
+FILES CREATED:
+- ...
+
+FILES MODIFIED:
+- ...
+
+DEPENDENCIES ADDED:
+- ...
+
+DATABASE CHANGES:
+- ...
+
+API ENDPOINTS:
+- ...
+
+TESTS RUN:
+- ...
+
+BUILD STATUS:
+PASS / FAIL
+
+SECURITY NOTES:
+- ...
+
+REMAINING:
+- ...
+
+NEXT PHASE:
+- ...
+```
+
+Do not simply say:
+
+```text
+Done.
+```
+
+Give a useful engineering report.
+
+---
+
+# 104. IMPORTANT: TEACH WHILE BUILDING
+
+The owner of this project is still learning Git, GitHub, backend development, APIs, databases, and deployment.
+
+Therefore:
+
+When performing an important operation, briefly explain:
+
+```text
+WHAT
+WHY
+```
+
+For example:
+
+```text
+I'm creating a backend branch so the existing frontend branch remains protected.
+```
+
+Do not provide unnecessary beginner-level explanations for every line of code.
+
+Teach important concepts while actually building the project.
+
+---
+
+# 105. DO NOT DUMP HUGE UNTESTED CODE
+
+Prefer:
+
+```text
+small implementation
+→ test
+→ verify
+→ next implementation
+```
+
+rather than generating thousands of lines without testing.
+
+---
+
+# 106. PRIORITY ORDER
+
+When trade-offs occur, prioritize:
+
+```text
+1. Security
+2. Correctness
+3. Data integrity
+4. Existing frontend preservation
+5. User experience
+6. Maintainability
+7. Performance
+8. Visual polish
+```
+
+Do not sacrifice security for convenience.
+
+Do not sacrifice data integrity for speed.
+
+Do not sacrifice the existing design merely to simplify implementation.
+
+---
+
+# 107. FIRST ACTION
+
+Your first task is NOT to write code.
+
+Your first task is:
+
+## AUDIT THE REPOSITORY.
+
+Inspect the entire project and produce:
+
+### A. Current architecture
+
+### B. Existing frontend structure
+
+### C. Existing routes
+
+### D. Existing forms
+
+### E. Existing data structures
+
+### F. Existing dependencies
+
+### G. Existing Git state
+
+### H. Missing backend functionality
+
+### I. Security risks
+
+### J. Recommended implementation plan
+
+### K. Files that should be modified
+
+### L. Files that should NOT be modified
+
+Then wait for the implementation phase unless the environment explicitly allows autonomous execution.
+
+Do not rewrite the project during the audit.
+
+---
+
+# 108. FINAL OBJECTIVE
+
+The finished VELANTIS platform should feel like a legitimate professional digital-solutions company website.
+
+A potential client should be able to:
+
+```text
+Discover VELANTIS
+       ↓
+Understand services
+       ↓
+View previous work
+       ↓
+Choose what they need
+       ↓
+Describe custom requirements
+       ↓
+Attach references
+       ↓
+Review request
+       ↓
+Submit
+       ↓
+Receive confirmation
+```
+
+While the VELANTIS team should be able to:
+
+```text
+Receive request
+       ↓
+Open admin dashboard
+       ↓
+Review client
+       ↓
+Review requirements
+       ↓
+View attachments
+       ↓
+Contact client
+       ↓
+Update status
+       ↓
+Track project
+```
+
+The final result should be:
+
+**modern, responsive, maintainable, secure, testable, production-oriented, and genuinely useful for a real freelance business.**
+
+Do not optimize for impressive-looking code.
+
+Optimize for a system that VELANTIS can actually use.
+
+# END MASTER PROMPT
+
