@@ -3,6 +3,7 @@ import { sendSuccess, sendError } from '../utils/apiResponse.js';
 import { createProjectSchema } from '../validators/project.validator.js';
 import { generateReferenceNumber } from '../utils/reference.js';
 import { logger } from '../utils/logger.js';
+import { sendProjectEmails } from '../services/email/email.service.js';
 
 /**
  * POST /api/projects
@@ -128,6 +129,12 @@ export async function createProject(req, res, next) {
     });
 
     logger.info(`New project created: ${newProject.referenceNumber} for ${newProject.clientEmail}`);
+
+    // Asynchronously dispatch client confirmation and team notification emails (non-blocking)
+    sendProjectEmails({
+      project: newProject,
+      serviceName: service.name,
+    });
 
     // 4. Return safe confirmation response
     return sendSuccess(

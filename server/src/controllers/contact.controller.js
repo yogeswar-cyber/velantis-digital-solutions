@@ -2,6 +2,7 @@ import prisma from '../db/prisma.js';
 import { sendSuccess, sendError } from '../utils/apiResponse.js';
 import { createContactSchema } from '../validators/contact.validator.js';
 import { logger } from '../utils/logger.js';
+import { sendContactEmails } from '../services/email/email.service.js';
 
 /**
  * POST /api/contact
@@ -58,6 +59,9 @@ export async function sendContactMessage(req, res, next) {
     });
 
     logger.info(`New contact message received from ${savedMessage.email} (${savedMessage.subject})`);
+
+    // Asynchronously dispatch confirmation to sender and notification to team (non-blocking)
+    sendContactEmails({ contactMessage: savedMessage });
 
     // 5. Return safe response
     return sendSuccess(
