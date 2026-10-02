@@ -5,24 +5,35 @@ import cookieParser from 'cookie-parser';
 import { config } from './config/env.js';
 import { requestLogger } from './middleware/requestLogger.js';
 import { generalLimiter } from './middleware/rateLimiter.js';
+import { sanitizeInputs } from './middleware/sanitizer.js';
+import { preventParameterPollution } from './middleware/hpp.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import apiRoutes from './routes/index.js';
 
 const app = express();
 
-// Trust reverse proxy (for rate limiting and secure cookies behind reverse proxies like Nginx/Vercel)
+// Trust reverse proxy (for accurate IP resolution behind Nginx/Vercel/Cloudflare)
 app.set('trust proxy', 1);
+
+// Disable X-Powered-By header to prevent technology fingerprinting
+app.disable('x-powered-by');
 
 // Security Headers via Helmet
 app.use(
   helmet({
-    contentSecurityPolicy: false, // Managed per-frontend requirements to avoid breaking Vite inline scripts during dev
+    contentSecurityPolicy: false, // Managed by client build/hosting
     crossOriginEmbedderPolicy: false,
     crossOriginResourcePolicy: { policy: 'cross-origin' },
+    frameguard: { action: 'deny' }, // Clickjacking mitigation
+    dnsPrefetchControl: { allow: false },
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+    hsts: config.isProduction
+      ? { maxAge: 31536000, includeSubDomains: true, preload: true }
+      : false,
   })
 );
 
-// Explicit CORS configuration (no wildcard in production)
+// Explicit CORS configuration (strictly no wildcard in production)
 const allowedOrigins = [
   config.clientUrl,
   'http://localhost:5173',
@@ -41,14 +52,21 @@ app.use(
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Cookie'],
+    exposedHeaders: ['Set-Cookie'],
   })
 );
 
-// Body parsers
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+// Body parsers with tight 1MB payload limits (prevents JSON body memory exhaustion / DoS)
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 app.use(cookieParser());
+
+// Input Sanitization (strips XSS script tags and dangerous HTML handlers)
+app.use(sanitizeInputs);
+
+// Parameter Pollution Protection (normalizes duplicate query parameters)
+app.use(preventParameterPollution());
 
 // Request logging
 app.use(requestLogger);
