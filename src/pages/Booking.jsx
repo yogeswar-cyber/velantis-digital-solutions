@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   CalendarDays,
@@ -15,7 +15,9 @@ import {
   Loader2,
   Sparkles,
   Layers,
-  FileText
+  FileText,
+  Upload,
+  X
 } from 'lucide-react';
 import api from '../services/api.js';
 
@@ -35,12 +37,17 @@ const TIMELINE_OPTIONS = [
   'Flexible',
 ];
 
+const ALLOWED_EXTENSIONS = [
+  '.pdf', '.png', '.jpg', '.jpeg', '.webp', '.doc', '.docx', '.xls', '.xlsx', '.zip'
+];
+
 export default function Booking({ services: fallbackServices = [], ProcessSteps, PageHero, Button }) {
   const [step, setStep] = useState(1);
   const [availableServices, setAvailableServices] = useState([]);
   const [loadingServices, setLoadingServices] = useState(true);
   const [featureSearch, setFeatureSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
+  const fileInputRef = useRef(null);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -56,6 +63,10 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
     customRequirements: '',
   });
 
+  // Attached files state
+  const [attachedFiles, setAttachedFiles] = useState([]);
+  const [fileError, setFileError] = useState(null);
+
   // UI States
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -70,7 +81,6 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
       .then((data) => {
         if (mounted && Array.isArray(data) && data.length > 0) {
           setAvailableServices(data);
-          // Default to first service if not selected
           if (!formData.serviceId) {
             setFormData((prev) => ({ ...prev, serviceId: data[0].slug || data[0].id }));
           }
@@ -78,7 +88,6 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
       })
       .catch((err) => {
         console.warn('Using fallback services list due to API fetch error:', err.message);
-        // Fallback to static list passed as props
         if (fallbackServices.length > 0) {
           const formatted = fallbackServices.map(([name, desc, Icon, features], idx) => ({
             id: `fallback-${idx}`,
@@ -106,15 +115,12 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
     };
   }, []);
 
-  // Current selected service record
   const currentService = availableServices.find(
     (s) => s.id === formData.serviceId || s.slug === formData.serviceId
   ) || availableServices[0] || null;
 
-  // Features of current service
   const serviceFeatures = currentService?.features || [];
 
-  // Filtered features by search & category
   const filteredFeatures = serviceFeatures.filter((f) => {
     const matchesSearch = f.name.toLowerCase().includes(featureSearch.toLowerCase()) ||
       (f.description && f.description.toLowerCase().includes(featureSearch.toLowerCase()));
@@ -122,10 +128,8 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
     return matchesSearch && matchesCategory;
   });
 
-  // Unique categories for active service
   const categories = ['ALL', ...new Set(serviceFeatures.map((f) => f.category).filter(Boolean))];
 
-  // Input change handler
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
@@ -133,7 +137,6 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
     }
   };
 
-  // Toggle Feature selection
   const toggleFeature = (featureId) => {
     setFormData((prev) => {
       const exists = prev.selectedFeatureIds.includes(featureId);
@@ -146,14 +149,45 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
     });
   };
 
-  // Select/Clear all features
-  const selectAllFeatures = () => {
-    const allIds = serviceFeatures.map((f) => f.id);
-    setFormData((prev) => ({ ...prev, selectedFeatureIds: allIds }));
-  };
-
   const clearAllFeatures = () => {
     setFormData((prev) => ({ ...prev, selectedFeatureIds: [] }));
+  };
+
+  // File Handling
+  const handleFileSelection = (newFiles) => {
+    setFileError(null);
+    const filesArray = Array.from(newFiles);
+
+    if (attachedFiles.length + filesArray.length > 5) {
+      setFileError('You can attach a maximum of 5 files in total.');
+      return;
+    }
+
+    const validNewFiles = [];
+    for (const file of filesArray) {
+      const ext = '.' + file.name.split('.').pop().toLowerCase();
+      if (!ALLOWED_EXTENSIONS.includes(ext)) {
+        setFileError(`File '${file.name}' has an unsupported format. Allowed: PDF, PNG, JPG, WEBP, DOC, DOCX, XLS, XLSX, ZIP.`);
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        setFileError(`File '${file.name}' exceeds the 10 MB limit.`);
+        return;
+      }
+      validNewFiles.push(file);
+    }
+
+    setAttachedFiles((prev) => [...prev, ...validNewFiles]);
+  };
+
+  const removeFile = (index) => {
+    setAttachedFiles((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const formatFileSize = (bytes) => {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
   };
 
   // Step 1 Validation
@@ -184,9 +218,9 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
     }
   };
 
-  // Handle final submission to API
+  // Handle final submission to API (Project + File Attachments)
   const handleSubmitProject = async () => {
-    if (submitting) return; // Prevent double submission
+    if (submitting) return;
     setSubmitting(true);
     setSubmissionError(null);
 
@@ -204,8 +238,22 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
         customRequirements: formData.customRequirements.trim(),
       };
 
+      // 1. Create project record
       const result = await api.createProject(payload);
-      setSubmissionResult(result);
+
+      // 2. Upload attached files if any
+      if (attachedFiles.length > 0) {
+        const formDataFiles = new FormData();
+        for (const file of attachedFiles) {
+          formDataFiles.append('files', file);
+        }
+        await api.uploadProjectFiles(result.id, formDataFiles);
+      }
+
+      setSubmissionResult({
+        ...result,
+        fileCount: attachedFiles.length,
+      });
       setStep(4);
       window.scrollTo({ top: 300, behavior: 'smooth' });
     } catch (err) {
@@ -235,7 +283,7 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
 
       <section className="section booking">
         <div className="container">
-          {/* Multi-Step Stepper Progress Bar */}
+          {/* Stepper Progress Bar */}
           <div className="progress">
             <span className={step >= 1 ? 'current' : ''}>1</span>
             <i className={step > 1 ? 'active-line' : ''}></i>
@@ -331,7 +379,6 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
                         value={formData.serviceId}
                         onChange={(e) => {
                           handleChange('serviceId', e.target.value);
-                          // Reset selected features when switching service type
                           setFormData((prev) => ({ ...prev, selectedFeatureIds: [] }));
                         }}
                       >
@@ -389,6 +436,84 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
                     {errors.description && <span className="field-error">{errors.description}</span>}
                   </label>
 
+                  {/* Interactive File Upload Area */}
+                  <label>
+                    Attach Reference Files (Optional)
+                    <div
+                      className="upload"
+                      onClick={() => fileInputRef.current?.click()}
+                      onDragOver={(e) => e.preventDefault()}
+                      onDrop={(e) => {
+                        e.preventDefault();
+                        if (e.dataTransfer.files) {
+                          handleFileSelection(e.dataTransfer.files);
+                        }
+                      }}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <Upload />
+                      <span>
+                        Drag & drop files here, or <b>click to browse</b>
+                        <small>Support for PDF, Images, Word, Excel, or ZIP (Max 10 MB each, up to 5 files)</small>
+                      </span>
+                    </div>
+
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      multiple
+                      accept=".pdf,.png,.jpg,.jpeg,.webp,.doc,.docx,.xls,.xlsx,.zip"
+                      style={{ display: 'none' }}
+                      onChange={(e) => {
+                        if (e.target.files) {
+                          handleFileSelection(e.target.files);
+                        }
+                      }}
+                    />
+
+                    {fileError && <span className="field-error" style={{ marginTop: '0.4rem' }}>{fileError}</span>}
+
+                    {/* Attached files chips list */}
+                    {attachedFiles.length > 0 && (
+                      <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                        {attachedFiles.map((file, idx) => (
+                          <div
+                            key={idx}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'space-between',
+                              background: '#fff7ed',
+                              border: '1px solid #fed7aa',
+                              padding: '0.4rem 0.8rem',
+                              borderRadius: '6px',
+                              fontSize: '0.85rem',
+                            }}
+                          >
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', overflow: 'hidden' }}>
+                              <FileText size={16} color="#ff5a00" flexShrink={0} />
+                              <span style={{ fontWeight: 600, color: '#1f2937', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+                                {file.name}
+                              </span>
+                              <span style={{ color: '#6b7280', fontSize: '0.75rem' }}>({formatFileSize(file.size)})</span>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                removeFile(idx);
+                              }}
+                              style={{ background: 'none', border: 'none', color: '#9ca3af', cursor: 'pointer', padding: '2px' }}
+                              title="Remove file"
+                            >
+                              <X size={16} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </label>
+
                   <div style={{ marginTop: '1.5rem' }}>
                     <button type="submit" className="btn full">
                       Continue to Requirements <ArrowRight size={18} />
@@ -416,7 +541,6 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
                     </div>
                   </div>
 
-                  {/* Search and Category Filter Toolbar */}
                   <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
                     <div style={{ flex: 1, minWidth: '220px', position: 'relative' }}>
                       <input
@@ -445,7 +569,6 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
                     </div>
                   </div>
 
-                  {/* Category Pills */}
                   {categories.length > 2 && (
                     <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
                       {categories.map((cat) => (
@@ -471,7 +594,6 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
                     </div>
                   )}
 
-                  {/* Feature Selection Grid */}
                   <div style={{ maxHeight: '280px', overflowY: 'auto', border: '1px solid #e5e7eb', borderRadius: '10px', padding: '0.75rem', marginBottom: '1.5rem', background: '#fafafa' }}>
                     {filteredFeatures.length === 0 ? (
                       <p style={{ textAlign: 'center', color: '#9ca3af', padding: '2rem 0', margin: 0 }}>
@@ -490,7 +612,7 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
                                 borderRadius: '8px',
                                 border: '1.5px solid',
                                 borderColor: isSelected ? '#ff5a00' : '#e5e7eb',
-                                background: isSelected ? '#ffffff' : '#ffffff',
+                                background: '#ffffff',
                                 cursor: 'pointer',
                                 display: 'flex',
                                 alignItems: 'flex-start',
@@ -533,7 +655,6 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
                     )}
                   </div>
 
-                  {/* Natural Language Custom Requirements */}
                   <label>
                     Custom Requirements or Specific Integrations
                     <textarea
@@ -544,7 +665,6 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
                     />
                   </label>
 
-                  {/* Step 2 Buttons */}
                   <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.5rem' }}>
                     <button
                       type="button"
@@ -579,7 +699,7 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
                     </div>
                   )}
 
-                  {/* Client Info Block */}
+                  {/* Client Info */}
                   <div style={{ border: '1px solid #e5e7eb', borderRadius: '10px', padding: '1rem', marginBottom: '1rem', background: '#fafafa' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.6rem' }}>
                       <strong style={{ fontSize: '0.95rem', color: '#111827' }}>Client Contact Details</strong>
@@ -599,7 +719,7 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
                     </div>
                   </div>
 
-                  {/* Project Overview Block */}
+                  {/* Project Scope */}
                   <div style={{ border: '1px solid #e5e7eb', borderRadius: '10px', padding: '1rem', marginBottom: '1rem', background: '#fafafa' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.6rem' }}>
                       <strong style={{ fontSize: '0.95rem', color: '#111827' }}>Project Scope</strong>
@@ -624,8 +744,8 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
                     </div>
                   </div>
 
-                  {/* Selected Features Block */}
-                  <div style={{ border: '1px solid #e5e7eb', borderRadius: '10px', padding: '1rem', marginBottom: '1.5rem', background: '#fafafa' }}>
+                  {/* Features */}
+                  <div style={{ border: '1px solid #e5e7eb', borderRadius: '10px', padding: '1rem', marginBottom: '1rem', background: '#fafafa' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.6rem' }}>
                       <strong style={{ fontSize: '0.95rem', color: '#111827' }}>
                         Selected Features ({formData.selectedFeatureIds.length})
@@ -679,7 +799,39 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
                     )}
                   </div>
 
-                  {/* Actions */}
+                  {/* Attached Files Review */}
+                  <div style={{ border: '1px solid #e5e7eb', borderRadius: '10px', padding: '1rem', marginBottom: '1.5rem', background: '#fafafa' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.6rem' }}>
+                      <strong style={{ fontSize: '0.95rem', color: '#111827' }}>
+                        Attached Files ({attachedFiles.length})
+                      </strong>
+                      <button
+                        type="button"
+                        onClick={() => setStep(1)}
+                        style={{ background: 'none', border: 'none', color: '#ff5a00', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600 }}
+                      >
+                        Edit
+                      </button>
+                    </div>
+
+                    {attachedFiles.length === 0 ? (
+                      <p style={{ fontSize: '0.85rem', color: '#9ca3af', margin: 0 }}>
+                        No files attached.
+                      </p>
+                    ) : (
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                        {attachedFiles.map((f, i) => (
+                          <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.85rem', color: '#374151' }}>
+                            <FileText size={15} color="#ff5a00" />
+                            <span>{f.name}</span>
+                            <small style={{ color: '#9ca3af' }}>({formatFileSize(f.size)})</small>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Submit Actions */}
                   <div style={{ display: 'flex', gap: '0.75rem' }}>
                     <button
                       type="button"
@@ -699,7 +851,7 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
                     >
                       {submitting ? (
                         <>
-                          <Loader2 size={18} className="spinner" style={{ animation: 'spin 1s linear infinite' }} />
+                          <Loader2 size={18} className="spinner" />
                           Submitting Project...
                         </>
                       ) : (
@@ -754,6 +906,13 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
                       >
                         {submissionResult.referenceNumber}
                       </div>
+
+                      {submissionResult.fileCount > 0 && (
+                        <div style={{ fontSize: '0.8rem', color: '#16a34a', fontWeight: 600, marginBottom: '0.5rem' }}>
+                          ✓ {submissionResult.fileCount} reference file(s) attached securely
+                        </div>
+                      )}
+
                       <p style={{ fontSize: '0.8rem', color: '#6b7280', margin: '0 0 0.75rem' }}>
                         Please save this reference number for all future communications.
                       </p>
@@ -795,6 +954,7 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
                       onClick={() => {
                         setStep(1);
                         setSubmissionResult(null);
+                        setAttachedFiles([]);
                         setFormData({
                           clientName: '',
                           clientEmail: '',
@@ -816,7 +976,7 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
               )}
             </div>
 
-            {/* Sidebar Cards (Preserved identical to original VELANTIS design) */}
+            {/* Aside */}
             <aside>
               <div className="side-card orange">
                 <CalendarDays />
