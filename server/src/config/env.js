@@ -15,6 +15,8 @@ export const config = {
   port: parseInt(process.env.PORT, 10) || 5000,
   clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
   sessionSecret: process.env.SESSION_SECRET || 'dev-session-secret-change-in-production',
+  jwtSecret: process.env.JWT_SECRET || process.env.SESSION_SECRET || 'dev-jwt-secret-change-in-production',
+  jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
   databaseUrl: process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/velantis_db?schema=public',
   uploads: {
     dir: process.env.UPLOAD_DIR || 'uploads',

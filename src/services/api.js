@@ -79,10 +79,11 @@ export const api = {
   // File Uploads (to be connected in Phase 7)
   uploadProjectFiles: (projectId, formData) => request(`/projects/${projectId}/files`, { method: 'POST', body: formData }),
 
-  // Authentication (to be connected in Phase 8)
+  // Authentication (Phase 8)
   login: (credentials) => request('/auth/login', { method: 'POST', body: JSON.stringify(credentials) }),
   logout: () => request('/auth/logout', { method: 'POST' }),
   getCurrentUser: () => request('/auth/me'),
+  changePassword: (passwordData) => request('/auth/change-password', { method: 'POST', body: JSON.stringify(passwordData) }),
 
   // Admin (to be connected in Phase 9)
   getAdminProjects: (params = '') => request(`/admin/projects${params ? `?${params}` : ''}`),
