@@ -5,6 +5,7 @@ import { ArrowRight, ArrowUpRight, ChevronRight, Menu, X, Code2, ShoppingCart, C
 import './styles.css';
 import BookingPage from './pages/Booking.jsx';
 import ContactPage from './pages/Contact.jsx';
+import AdminPage from './pages/Admin.jsx';
 import logo from './assets/logo.png';
 import homeHero from './assets/home-hero.png';
 import aboutHero from './assets/about-hero.png';
@@ -63,6 +64,6 @@ function Booking(){return <BookingPage services={services} ProcessSteps={Process
 function Field({label,placeholder,select,options=[],type='text'}){return <label>{label}{select?<select defaultValue=""><option value="" disabled>{placeholder}</option>{options.map(o=><option key={o}>{o}</option>)}</select>:<input type={type} placeholder={placeholder}/>}</label>}
 function Contact(){return <ContactPage services={services} PageHero={PageHero}/>}
 function Process(){return <><PageHero eyebrow="OUR PROCESS" title="From Idea to" accent="Impact." desc="A simple, transparent workflow designed to turn your requirements into a practical digital solution."/><section className="section"><div className="container process-page"><ProcessSteps/>{[['Discover','We start by understanding your goals, audience, business context and the problem you want to solve.'],['Design','We turn requirements into a clean experience, information structure and visual direction.'],['Build','We develop the solution with modern technologies, reusable components and responsive design.'],['Test','We check functionality, responsiveness, usability and basic security before delivery.'],['Deliver','We deploy, hand over and provide practical support for the next stage of your digital journey.']].map(([t,d],i)=><div className="process-detail" key={t}><span>0{i+1}</span><div><h2>{t}</h2><p>{d}</p></div></div>)}</div></section><CTA/></>}
-function App(){return <BrowserRouter><Layout><Routes><Route path="/" element={<Home/>}/><Route path="/work" element={<Work/>}/><Route path="/services" element={<Services/>}/><Route path="/process" element={<Process/>}/><Route path="/about" element={<About/>}/><Route path="/booking" element={<Booking/>}/><Route path="/contact" element={<Contact/>}/></Routes></Layout></BrowserRouter>}
+function App(){return <BrowserRouter><Layout><Routes><Route path="/" element={<Home/>}/><Route path="/work" element={<Work/>}/><Route path="/services" element={<Services/>}/><Route path="/process" element={<Process/>}/><Route path="/about" element={<About/>}/><Route path="/booking" element={<Booking/>}/><Route path="/contact" element={<Contact/>}/><Route path="/admin" element={<AdminPage/>}/></Routes></Layout></BrowserRouter>}
 
 createRoot(document.getElementById('root')).render(<App/>);

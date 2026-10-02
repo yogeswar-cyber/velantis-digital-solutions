@@ -85,11 +85,13 @@ export const api = {
   getCurrentUser: () => request('/auth/me'),
   changePassword: (passwordData) => request('/auth/change-password', { method: 'POST', body: JSON.stringify(passwordData) }),
 
-  // Admin (to be connected in Phase 9)
+  // Admin (Phase 9)
+  getAdminMetrics: () => request('/admin/metrics'),
   getAdminProjects: (params = '') => request(`/admin/projects${params ? `?${params}` : ''}`),
   getAdminProjectById: (id) => request(`/admin/projects/${id}`),
   updateProjectStatus: (id, updateData) => request(`/admin/projects/${id}`, { method: 'PATCH', body: JSON.stringify(updateData) }),
   getAdminMessages: (params = '') => request(`/admin/messages${params ? `?${params}` : ''}`),
+  updateMessageStatus: (id, updateData) => request(`/admin/messages/${id}`, { method: 'PATCH', body: JSON.stringify(updateData) }),
   getAdminAuditLogs: (params = '') => request(`/admin/audit-logs${params ? `?${params}` : ''}`),
 };
 
