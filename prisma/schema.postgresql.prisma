@@ -1,5 +1,6 @@
-// VELANTIS DIGITAL SOLUTIONS — PostgreSQL Production Schema
-// To use for PostgreSQL production, copy this file to schema.prisma or set DATABASE_URL to your PostgreSQL connection.
+// VELANTIS DIGITAL SOLUTIONS — Production PostgreSQL Database Schema
+// Use this schema for production deployment against PostgreSQL (Supabase, Railway, Neon, AWS RDS, etc.)
+// Deploy with: npx prisma db push --schema=prisma/schema.postgresql.prisma
 
 generator client {
   provider = "prisma-client-js"
@@ -30,7 +31,7 @@ model Service {
   name         String
   slug         String    @unique
   description  String
-  icon         String
+  icon         String    // Lucide icon identifier (e.g. Code2, ShoppingCart)
   active       Boolean   @default(true)
   displayOrder Int       @default(0)
   createdAt    DateTime  @default(now())
@@ -59,7 +60,7 @@ model Feature {
 
 model Project {
   id              String                 @id @default(cuid())
-  referenceNumber String                 @unique
+  referenceNumber String                 @unique // Format: VL-YYYY-XXXX (e.g. VL-2026-0001)
   clientName      String
   clientEmail     String
   clientPhone     String?
@@ -69,7 +70,7 @@ model Project {
   budgetRange     String?
   timeline        String?
   description     String
-  status          String                 @default("NEW")
+  status          String                 @default("NEW") // NEW, REVIEWING, CONTACTED, QUOTED, APPROVED, IN_PROGRESS, COMPLETED, CANCELLED
   internalNotes   String?
   createdAt       DateTime               @default(now())
   updatedAt       DateTime               @updatedAt
@@ -86,7 +87,7 @@ model ProjectFeature {
   project           Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   featureId         String?
   feature           Feature? @relation(fields: [featureId], references: [id], onDelete: SetNull)
-  customFeatureName String?
+  customFeatureName String?  // Optional client-defined feature
   createdAt         DateTime @default(now())
 
   @@map("project_features")
@@ -99,7 +100,7 @@ model ProjectFile {
   originalFilename String
   storedFilename   String
   mimeType         String
-  size             Int
+  size             Int      // File size in bytes
   storageKey       String   @unique
   createdAt        DateTime @default(now())
 
@@ -113,7 +114,7 @@ model ContactMessage {
   subject     String
   projectType String?
   message     String
-  status      String   @default("NEW")
+  status      String   @default("NEW") // NEW, READ, REPLIED, ARCHIVED
   ipAddress   String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -125,10 +126,10 @@ model AuditLog {
   id           String   @id @default(cuid())
   userId       String?
   user         User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
-  action       String
-  resourceType String
+  action       String   // ADMIN_LOGIN, PROJECT_CREATED, PROJECT_STATUS_CHANGED, FILE_ACCESSED, etc.
+  resourceType String   // PROJECT, MESSAGE, FILE, AUTH, SERVICE
   resourceId   String?
-  metadata     String?
+  metadata     String?  // Sanitized JSON string of event metadata
   ipAddress    String?
   createdAt    DateTime @default(now())
 

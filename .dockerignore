@@ -1,0 +1,15 @@
+node_modules
+.git
+.github
+.env
+.env.*
+!.env.example
+!.env.production.example
+uploads
+dist
+prisma/dev.db*
+prisma/migrations
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db

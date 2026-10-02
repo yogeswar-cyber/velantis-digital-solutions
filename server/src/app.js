@@ -2,6 +2,9 @@ import express from 'express';
 import helmet from 'helmet';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { config } from './config/env.js';
 import { requestLogger } from './middleware/requestLogger.js';
 import { generalLimiter } from './middleware/rateLimiter.js';
@@ -76,6 +79,21 @@ app.use('/api', generalLimiter);
 
 // API routes
 app.use('/api', apiRoutes);
+
+// In production, serve compiled frontend SPA if dist/ exists
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const distPath = path.resolve(__dirname, '../../dist');
+
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
+    res.sendFile(path.resolve(distPath, 'index.html'));
+  });
+}
 
 // 404 handler for undefined API routes
 app.use(notFoundHandler);

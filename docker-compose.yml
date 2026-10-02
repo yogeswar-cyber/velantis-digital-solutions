@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  velantis-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: velantis_app
+    restart: unless-stopped
+    ports:
+      - '5000:5000'
+    environment:
+      - NODE_ENV=production
+      - PORT=5000
+      - CLIENT_URL=https://velantis.in
+      - DATABASE_URL=postgresql://velantis:velantis_secure_pass@velantis-db:5432/velantis_db?schema=public
+      - SESSION_SECRET=${SESSION_SECRET:-changeme_prod_session_secret_64chars_minimum_length_required}
+      - JWT_SECRET=${JWT_SECRET:-changeme_prod_jwt_secret_64chars_minimum_length_required}
+      - UPLOAD_DIR=uploads
+      - MAX_FILE_SIZE_MB=10
+      - SMTP_HOST=${SMTP_HOST:-smtp.sendgrid.net}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASS=${SMTP_PASS:-}
+      - EMAIL_FROM=VELANTIS Digital Solutions <hello@velantis.in>
+      - TEAM_NOTIFICATION_EMAIL=team@velantis.in
+    volumes:
+      - ./uploads:/app/uploads
+    depends_on:
+      velantis-db:
+        condition: service_healthy
+    networks:
+      - velantis-network
+
+  velantis-db:
+    image: postgres:16-alpine
+    container_name: velantis_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: velantis_db
+      POSTGRES_USER: velantis
+      POSTGRES_PASSWORD: velantis_secure_pass
+    volumes:
+      - velantis_pgdata:/var/lib/postgresql/data
+    networks:
+      - velantis-network
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U velantis -d velantis_db']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  velantis-network:
+    driver: bridge
+
+volumes:
+  velantis_pgdata:
