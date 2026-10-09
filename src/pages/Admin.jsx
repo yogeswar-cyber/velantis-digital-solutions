@@ -952,7 +952,7 @@ export default function Admin() {
                         <small style={{ color: '#6b7280' }}>({(file.size / 1024).toFixed(0)} KB)</small>
                       </div>
                       <a
-                        href={`/api/projects/${selectedProject.id}/files/${file.id}`}
+                        href={`/api/admin/projects/${selectedProject.id}/files/${file.id}`}
                         target="_blank"
                         rel="noreferrer"
                         style={{

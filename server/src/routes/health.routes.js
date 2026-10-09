@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
     await prisma.$queryRaw`SELECT 1`;
     dbStatus = 'connected';
   } catch (error) {
-    dbStatus = 'error';
+    dbStatus = 'disconnected';
   }
 
   const payload = {

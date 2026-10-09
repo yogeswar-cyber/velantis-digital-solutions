@@ -1,6 +1,9 @@
+import fs from 'fs';
+import path from 'path';
 import app from '../src/app.js';
 import prisma from '../src/db/prisma.js';
 import bcrypt from 'bcryptjs';
+import { UPLOAD_BASE_DIR } from '../src/middleware/upload.js';
 
 async function testEndToEndWorkflow() {
   console.log('🧪 Starting End-to-End Client & Admin Business Lifecycle Test...');
@@ -135,7 +138,9 @@ async function testEndToEndWorkflow() {
         throw new Error('Step 7 Failed: Project details missing files');
       }
 
-      const resDownload = await fetch(`${baseUrl}/projects/${createdProjectId}/files/${attachedFileId}`);
+      const resDownload = await fetch(`${baseUrl}/projects/${createdProjectId}/files/${attachedFileId}`, {
+        headers: { Cookie: authCookie },
+      });
       if (resDownload.status !== 200 || !resDownload.headers.get('content-disposition')?.includes('attachment')) {
         throw new Error('Step 7 Failed: Secure file download failed');
       }
@@ -208,6 +213,13 @@ async function testEndToEndWorkflow() {
     } finally {
       // Clean up test data
       if (createdProjectId) {
+        try {
+          const filesToDelete = await prisma.projectFile.findMany({ where: { projectId: createdProjectId } });
+          for (const f of filesToDelete) {
+            const diskPath = path.resolve(UPLOAD_BASE_DIR, f.storedFilename);
+            if (fs.existsSync(diskPath)) fs.unlinkSync(diskPath);
+          }
+        } catch (_) {}
         await prisma.project.delete({ where: { id: createdProjectId } }).catch(() => {});
       }
       await prisma.user.delete({ where: { id: adminUser.id } }).catch(() => {});

@@ -3,6 +3,7 @@ import { createProject, getProjectByReference } from '../controllers/project.con
 import { uploadProjectFiles, downloadProjectFile } from '../controllers/file.controller.js';
 import { projectFilesUpload } from '../middleware/upload.js';
 import { submissionLimiter } from '../middleware/rateLimiter.js';
+import { requireAuth } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -15,7 +16,7 @@ router.get('/:reference', getProjectByReference);
 // POST /api/projects/:id/files - upload reference files to a project
 router.post('/:id/files', submissionLimiter, projectFilesUpload, uploadProjectFiles);
 
-// GET /api/projects/:id/files/:fileId - controlled secure download endpoint
-router.get('/:id/files/:fileId', downloadProjectFile);
+// GET /api/projects/:id/files/:fileId - controlled secure download endpoint (authenticated)
+router.get('/:id/files/:fileId', requireAuth, downloadProjectFile);
 
 export default router;

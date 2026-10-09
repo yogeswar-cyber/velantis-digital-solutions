@@ -31,9 +31,9 @@ ENV PORT=5000
 COPY package*.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
-# Copy Prisma schema and generate client
+# Copy Prisma schema and generate client for production PostgreSQL
 COPY prisma ./prisma
-RUN npx prisma generate
+RUN npx prisma generate --schema=prisma/schema.postgresql.prisma
 
 # Copy built frontend assets from builder stage
 COPY --from=builder /app/dist ./dist

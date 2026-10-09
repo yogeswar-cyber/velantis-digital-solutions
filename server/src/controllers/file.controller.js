@@ -156,6 +156,7 @@ export async function downloadProjectFile(req, res, next) {
         action: 'FILE_DOWNLOADED',
         resourceType: 'FILE',
         resourceId: fileRecord.id,
+        userId: req.user?.id || null,
         metadata: JSON.stringify({
           filename: fileRecord.originalFilename,
         }),

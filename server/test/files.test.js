@@ -1,7 +1,9 @@
 import fs from 'fs';
 import path from 'path';
+import jwt from 'jsonwebtoken';
 import app from '../src/app.js';
 import prisma from '../src/db/prisma.js';
+import { config } from '../src/config/env.js';
 import { UPLOAD_BASE_DIR } from '../src/middleware/upload.js';
 
 async function testFilesAPI() {
@@ -65,9 +67,27 @@ async function testFilesAPI() {
       const fileToDownload = dbFiles[0];
       const downloadUrl = `http://localhost:${PORT}/api/projects/${project.id}/files/${fileToDownload.id}`;
 
-      const resDownload = await fetch(downloadUrl);
+      // Verify unauthenticated download is rejected with 401
+      const unauthDownload = await fetch(downloadUrl);
+      if (unauthDownload.status !== 401) {
+        throw new Error(`Expected 401 for unauthenticated download, got ${unauthDownload.status}`);
+      }
+      console.log('✅ Unauthenticated file download blocked with 401 as expected');
+
+      // Create admin auth token
+      const admin = await prisma.user.findFirst({ where: { role: 'ADMIN' } });
+      const token = jwt.sign(
+        { userId: admin ? admin.id : 'test-admin', email: admin ? admin.email : 'admin@velantis.in', role: 'ADMIN' },
+        config.jwtSecret
+      );
+      const authCookie = `token=${token}`;
+
+      // Test authenticated download
+      const resDownload = await fetch(downloadUrl, {
+        headers: { Cookie: authCookie },
+      });
       if (resDownload.status !== 200) {
-        throw new Error(`Download failed with status ${resDownload.status}`);
+        throw new Error(`Authenticated download failed with status ${resDownload.status}`);
       }
 
       const contentDisp = resDownload.headers.get('content-disposition');
@@ -84,7 +104,7 @@ async function testFilesAPI() {
       if (downloadedBuffer.length !== fileToDownload.size) {
         throw new Error('Downloaded file size does not match stored file size');
       }
-      console.log('✅ Secure download verified with protected headers and matching content');
+      console.log('✅ Secure authenticated download verified with protected headers and matching content');
 
       // 4. Test Magic Bytes Spoofing Attack Rejection
       // A fake PDF file containing script code instead of %PDF magic bytes

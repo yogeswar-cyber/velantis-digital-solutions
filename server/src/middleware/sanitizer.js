@@ -17,24 +17,36 @@ function sanitizeString(str) {
     .trim();
 }
 
+const EXCLUDED_FIELDS = new Set([
+  'password',
+  'currentPassword',
+  'newPassword',
+  'token',
+]);
+
 /**
- * Recursively sanitizes all string fields within an object or array.
+ * Recursively sanitizes all string fields within an object or array,
+ * preserving raw values for authentication credentials and secrets.
  */
-function sanitizeDeep(obj) {
+function sanitizeDeep(obj, currentKey = '') {
   if (obj === null || obj === undefined) return obj;
+
+  if (currentKey && EXCLUDED_FIELDS.has(currentKey)) {
+    return obj;
+  }
 
   if (typeof obj === 'string') {
     return sanitizeString(obj);
   }
 
   if (Array.isArray(obj)) {
-    return obj.map(sanitizeDeep);
+    return obj.map((item) => sanitizeDeep(item, currentKey));
   }
 
   if (typeof obj === 'object') {
     const sanitized = {};
     for (const [key, value] of Object.entries(obj)) {
-      sanitized[key] = sanitizeDeep(value);
+      sanitized[key] = sanitizeDeep(value, key);
     }
     return sanitized;
   }

@@ -13,7 +13,7 @@ services:
       - NODE_ENV=production
       - PORT=5000
       - CLIENT_URL=https://velantis.in
-      - DATABASE_URL=postgresql://velantis:velantis_secure_pass@velantis-db:5432/velantis_db?schema=public
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-velantis}:${POSTGRES_PASSWORD:-velantis_secure_pass}@velantis-db:5432/${POSTGRES_DB:-velantis_db}?schema=public
       - SESSION_SECRET=${SESSION_SECRET:-changeme_prod_session_secret_64chars_minimum_length_required}
       - JWT_SECRET=${JWT_SECRET:-changeme_prod_jwt_secret_64chars_minimum_length_required}
       - UPLOAD_DIR=uploads
@@ -37,9 +37,9 @@ services:
     container_name: velantis_postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: velantis_db
-      POSTGRES_USER: velantis
-      POSTGRES_PASSWORD: velantis_secure_pass
+      POSTGRES_DB: ${POSTGRES_DB:-velantis_db}
+      POSTGRES_USER: ${POSTGRES_USER:-velantis}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-velantis_secure_pass}
     volumes:
       - velantis_pgdata:/var/lib/postgresql/data
     networks:

@@ -14,6 +14,7 @@
     "db:push": "prisma db push",
     "db:seed": "node prisma/seed.js",
     "db:migrate": "prisma migrate dev",
+    "db:records": "node server/src/utils/view-records.js",
     "test": "node server/test/run-all.js",
     "test:unit": "node server/test/unit.test.js",
     "test:e2e": "node server/test/e2e-workflow.test.js"

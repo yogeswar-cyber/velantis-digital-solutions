@@ -217,7 +217,7 @@ docker exec velantis_postgres pg_restore -U velantis -d velantis_db --clean --if
 
 2. **Mitigating Spam Floods**:
    - The `/api/contact` endpoint contains a silent honeypot (`hp_website`).
-   - The rate limiter will automatically block any IP exceeding 5 contact submissions or 5 project requests within 15 minutes with HTTP 429.
+   - The rate limiter will automatically block any IP exceeding 20 contact submissions or 20 project requests within 15 minutes with HTTP 429.
 
 3. **Inspecting Audit Logs**:
    - Authenticated administrators can view real-time security events at `https://velantis.in/admin` under the **Security & Audit Logs** tab.

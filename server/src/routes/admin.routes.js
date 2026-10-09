@@ -8,6 +8,7 @@ import {
   updateMessage,
   getAuditLogs,
 } from '../controllers/admin.controller.js';
+import { downloadProjectFile } from '../controllers/file.controller.js';
 import { requireAuth, requireRole } from '../middleware/auth.js';
 
 const router = Router();
@@ -23,6 +24,7 @@ router.get('/metrics', getMetrics);
 router.get('/projects', getProjects);
 router.get('/projects/:id', getProjectById);
 router.patch('/projects/:id', updateProject);
+router.get('/projects/:id/files/:fileId', downloadProjectFile);
 
 // Contact Inquiries
 router.get('/messages', getMessages);
