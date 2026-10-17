@@ -16,7 +16,13 @@ export function getEmailTransporter() {
 
   const { smtpHost, smtpPort, smtpSecure, smtpUser, smtpPass } = config.email;
 
-  if (smtpUser && smtpPass && smtpHost) {
+  const isPlaceholder =
+    !smtpUser ||
+    !smtpPass ||
+    smtpUser === 'your_smtp_username' ||
+    smtpPass === 'your_smtp_password';
+
+  if (!isPlaceholder && smtpHost) {
     try {
       transporter = nodemailer.createTransport({
         host: smtpHost,

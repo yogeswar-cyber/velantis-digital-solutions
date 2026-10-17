@@ -4,15 +4,23 @@ import fs from 'fs';
 import crypto from 'crypto';
 import { fileURLToPath } from 'url';
 
+import os from 'os';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Uploads directory outside public client directories
-export const UPLOAD_BASE_DIR = path.resolve(__dirname, '../../../uploads/projects');
+// Uploads directory: in serverless (Vercel), only /tmp is writable
+export const UPLOAD_BASE_DIR = process.env.VERCEL
+  ? path.join(os.tmpdir(), 'uploads', 'projects')
+  : path.resolve(__dirname, '../../../uploads/projects');
 
-// Ensure directory exists
-if (!fs.existsSync(UPLOAD_BASE_DIR)) {
-  fs.mkdirSync(UPLOAD_BASE_DIR, { recursive: true });
+// Safely ensure directory exists without crashing on read-only filesystems
+try {
+  if (!fs.existsSync(UPLOAD_BASE_DIR)) {
+    fs.mkdirSync(UPLOAD_BASE_DIR, { recursive: true });
+  }
+} catch (err) {
+  console.warn(`[UPLOAD_DIR] Could not pre-create ${UPLOAD_BASE_DIR}: ${err.message}`);
 }
 
 const ALLOWED_EXTENSIONS = new Set([

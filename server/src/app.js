@@ -39,6 +39,8 @@ app.use(
 // Explicit CORS configuration (strictly no wildcard in production)
 const allowedOrigins = [
   config.clientUrl,
+  'https://velantis.in',
+  'https://www.velantis.in',
   'http://localhost:5173',
   'http://127.0.0.1:5173',
   'http://localhost:4173',
@@ -48,7 +50,16 @@ app.use(
   cors({
     origin: (origin, callback) => {
       // Allow requests with no origin (like mobile apps, curl, server-to-server)
-      if (!origin || allowedOrigins.includes(origin)) {
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      const isAllowed =
+        allowedOrigins.includes(origin) ||
+        (origin.startsWith('https://') && origin.endsWith('.vercel.app')) ||
+        (process.env.VERCEL_URL && origin === `https://${process.env.VERCEL_URL}`);
+
+      if (isAllowed) {
         return callback(null, true);
       }
       return callback(new Error(`CORS policy does not allow access from origin: ${origin}`));

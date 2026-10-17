@@ -77,34 +77,43 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
   // Fetch Services & Features from API on mount
   useEffect(() => {
     let mounted = true;
+
+    const applyFallback = () => {
+      if (fallbackServices.length > 0) {
+        const formatted = fallbackServices.map(([name, desc, Icon, features], idx) => ({
+          id: `fallback-${idx}`,
+          name,
+          slug: name.toLowerCase().replace(/\s+/g, '-'),
+          description: desc,
+          features: features.map((f, fIdx) => ({
+            id: `feat-${idx}-${fIdx}`,
+            name: f,
+            category: 'General',
+          })),
+        }));
+        setAvailableServices(formatted);
+        if (!formData.serviceId) {
+          setFormData((prev) => ({ ...prev, serviceId: formatted[0].slug }));
+        }
+      }
+    };
+
     api.getServices()
       .then((data) => {
-        if (mounted && Array.isArray(data) && data.length > 0) {
-          setAvailableServices(data);
-          if (!formData.serviceId) {
-            setFormData((prev) => ({ ...prev, serviceId: data[0].slug || data[0].id }));
+        if (mounted) {
+          if (Array.isArray(data) && data.length > 0) {
+            setAvailableServices(data);
+            if (!formData.serviceId) {
+              setFormData((prev) => ({ ...prev, serviceId: data[0].slug || data[0].id }));
+            }
+          } else {
+            applyFallback();
           }
         }
       })
       .catch((err) => {
         console.warn('Using fallback services list due to API fetch error:', err.message);
-        if (fallbackServices.length > 0) {
-          const formatted = fallbackServices.map(([name, desc, Icon, features], idx) => ({
-            id: `fallback-${idx}`,
-            name,
-            slug: name.toLowerCase().replace(/\s+/g, '-'),
-            description: desc,
-            features: features.map((f, fIdx) => ({
-              id: `feat-${idx}-${fIdx}`,
-              name: f,
-              category: 'General',
-            })),
-          }));
-          setAvailableServices(formatted);
-          if (!formData.serviceId) {
-            setFormData((prev) => ({ ...prev, serviceId: formatted[0].slug }));
-          }
-        }
+        if (mounted) applyFallback();
       })
       .finally(() => {
         if (mounted) setLoadingServices(false);
@@ -241,18 +250,24 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
       // 1. Create project record
       const result = await api.createProject(payload);
 
-      // 2. Upload attached files if any
+      // 2. Upload attached files if any (non-blocking for project confirmation)
+      let uploadedFileCount = 0;
       if (attachedFiles.length > 0) {
-        const formDataFiles = new FormData();
-        for (const file of attachedFiles) {
-          formDataFiles.append('files', file);
+        try {
+          const formDataFiles = new FormData();
+          for (const file of attachedFiles) {
+            formDataFiles.append('files', file);
+          }
+          await api.uploadProjectFiles(result.id, formDataFiles);
+          uploadedFileCount = attachedFiles.length;
+        } catch (uploadErr) {
+          console.warn('File attachment upload failed:', uploadErr);
         }
-        await api.uploadProjectFiles(result.id, formDataFiles);
       }
 
       setSubmissionResult({
         ...result,
-        fileCount: attachedFiles.length,
+        fileCount: uploadedFileCount,
       });
       setStep(4);
       window.scrollTo({ top: 300, behavior: 'smooth' });
