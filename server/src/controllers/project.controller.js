@@ -37,7 +37,11 @@ export async function createProject(req, res, next) {
     // 2. Resolve Service by ID or Slug
     const service = await prisma.service.findFirst({
       where: {
-        OR: [{ id: serviceId }, { slug: serviceId }],
+        OR: [
+          { id: serviceId },
+          { slug: serviceId.toLowerCase() },
+          { name: serviceId },
+        ],
         active: true,
       },
     });

@@ -92,20 +92,27 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
           })),
         }));
         setAvailableServices(formatted);
-        if (!formData.serviceId) {
-          setFormData((prev) => ({ ...prev, serviceId: formatted[0].slug }));
-        }
+        setFormData((prev) => ({
+          ...prev,
+          serviceId: prev.serviceId || formatted[0].slug || formatted[0].id,
+        }));
       }
     };
+
+    // Pre-seed from fallback immediately so options are available instantly on first paint
+    if (fallbackServices.length > 0) {
+      applyFallback();
+    }
 
     api.getServices()
       .then((data) => {
         if (mounted) {
           if (Array.isArray(data) && data.length > 0) {
             setAvailableServices(data);
-            if (!formData.serviceId) {
-              setFormData((prev) => ({ ...prev, serviceId: data[0].slug || data[0].id }));
-            }
+            setFormData((prev) => ({
+              ...prev,
+              serviceId: prev.serviceId || data[0].slug || data[0].id,
+            }));
           } else {
             applyFallback();
           }
@@ -209,9 +216,17 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
     if (!formData.clientEmail.trim() || !emailRegex.test(formData.clientEmail.trim())) {
       newErrors.clientEmail = 'Please provide a valid email address';
     }
-    if (!formData.serviceId) {
+
+    // Auto-resolve serviceId if not explicitly set yet
+    let activeServiceId = formData.serviceId;
+    if (!activeServiceId && availableServices.length > 0) {
+      activeServiceId = availableServices[0].slug || availableServices[0].id;
+      setFormData((prev) => ({ ...prev, serviceId: activeServiceId }));
+    }
+    if (!activeServiceId) {
       newErrors.serviceId = 'Please select a project type';
     }
+
     if (!formData.description.trim() || formData.description.trim().length < 10) {
       newErrors.description = 'Please describe your project goals (at least 10 characters)';
     }
@@ -221,6 +236,9 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
 
   const handleNextFromStep1 = (e) => {
     e.preventDefault();
+    if (!formData.serviceId && availableServices.length > 0) {
+      formData.serviceId = availableServices[0].slug || availableServices[0].id;
+    }
     if (validateStep1()) {
       setStep(2);
       window.scrollTo({ top: 300, behavior: 'smooth' });
@@ -391,10 +409,10 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
                     <label>
                       Project Type *
                       <select
-                        value={formData.serviceId}
+                        value={formData.serviceId || (availableServices[0]?.slug || availableServices[0]?.id || '')}
                         onChange={(e) => {
                           handleChange('serviceId', e.target.value);
-                          setFormData((prev) => ({ ...prev, selectedFeatureIds: [] }));
+                          setFormData((prev) => ({ ...prev, serviceId: e.target.value, selectedFeatureIds: [] }));
                         }}
                       >
                         {availableServices.map((svc) => (
@@ -529,7 +547,27 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
                     )}
                   </label>
 
-                  <div style={{ marginTop: '1.5rem' }}>
+                  {Object.keys(errors).length > 0 && (
+                    <div
+                      style={{
+                        background: '#fef2f2',
+                        border: '1px solid #fecaca',
+                        color: '#dc2626',
+                        padding: '0.75rem 1rem',
+                        borderRadius: '8px',
+                        marginTop: '1rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.6rem',
+                        fontSize: '0.88rem',
+                      }}
+                    >
+                      <AlertCircle size={18} flexShrink={0} />
+                      <span>Please complete the required fields highlighted above to continue to Requirements.</span>
+                    </div>
+                  )}
+
+                  <div style={{ marginTop: '1.25rem' }}>
                     <button type="submit" className="btn full">
                       Continue to Requirements <ArrowRight size={18} />
                     </button>

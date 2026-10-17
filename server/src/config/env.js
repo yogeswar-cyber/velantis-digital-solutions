@@ -20,7 +20,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 // Fail-fast: refuse to start in production with missing or default secrets
 if (isProduction) {
   const sessionSecret = process.env.SESSION_SECRET || '';
-  const jwtSecret = process.env.JWT_SECRET || '';
+  const jwtSecret = process.env.JWT_SECRET || process.env.SESSION_SECRET || '';
 
   if (!sessionSecret || INSECURE_DEFAULTS.includes(sessionSecret)) {
     console.error('FATAL: SESSION_SECRET is missing or uses an insecure default. Set a unique 64+ character secret in your production .env file.');
