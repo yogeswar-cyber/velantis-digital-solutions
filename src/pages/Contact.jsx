@@ -285,7 +285,9 @@ export default function Contact({ services = [], PageHero }) {
               <Mail />
               <div>
                 <b>Email</b>
-                <span>hello@velantis.in</span>
+                <a href="mailto:velantisdigital@gmail.com" style={{ color: 'inherit', textDecoration: 'none' }}>
+                  <span>velantisdigital@gmail.com</span>
+                </a>
                 <small>We usually reply within 24 hours.</small>
               </div>
             </div>
@@ -304,16 +306,20 @@ export default function Contact({ services = [], PageHero }) {
             <h3>Follow Us</h3>
             <p>Stay connected for product updates, technology articles, and new work.</p>
             <div className="socials">
-              <a href="#" aria-label="GitHub">
+              <a href="https://www.instagram.com/velantisdigitalsolution?exln=MWMyNGl3Mjl1ZWtqNQ==" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+                </svg>
+              </a>
+              <a href="https://linkedin.com/company/velantis" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                 <Code2 />
               </a>
-              <a href="#" aria-label="LinkedIn">
+              <a href="https://github.com/velantis" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                 <Code2 />
               </a>
-              <a href="#" aria-label="Instagram">
-                <Code2 />
-              </a>
-              <a href="mailto:hello@velantis.in" aria-label="Email">
+              <a href="mailto:velantisdigital@gmail.com" aria-label="Email">
                 <Mail />
               </a>
             </div>

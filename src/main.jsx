@@ -10,9 +10,11 @@ import logo from './assets/logo.png';
 import homeHero from './assets/home-hero.png';
 import aboutHero from './assets/about-hero.png';
 import servicesHero from './assets/services-hero.png';
-import work1 from './assets/work1.png';
-import work2 from './assets/work2.png';
-import work3 from './assets/work3.png';
+import workPosterKart from './assets/work-posterkart.jpg';
+import workMalwareAi from './assets/work-malwareai.jpg';
+import workLiveGuard from './assets/work-liveguard.jpg';
+import workWeather from './assets/work-weather.jpg';
+import workPortfolio from './assets/work-portfolio.jpg';
 
 const orange='#ff5a00';
 const services=[
@@ -30,18 +32,49 @@ const services=[
  ['Basic Cybersecurity','Add an extra layer of security to your digital presence.',ShieldCheck,['Website Security Review','SSL/HTTPS Setup','Security Headers','WordPress Hardening','Basic Vulnerability Assessment']]
 ];
 const works=[
- ['LiveGuard','Intrusion Detection System','A dual-model intrusion detection pipeline with per-alert SHAP explanations.','Cybersecurity','AI/ML',work1],
- ['AI Malware Report Summarizer','AI + Cybersecurity','Upload malware reports and get AI-powered summaries, IoCs and key insights.','Python','GenAI',work2],
- ['Weather Monitoring','Web + Data','Real-time weather data with visualization and alerts.','Flask','Data Analysis',work3],
- ['Portfolio Website','Web Development','Personal portfolio with modern UI, animations and 3D elements.','React','Tailwind CSS',work1]
+ ['PosterKart','E-Commerce & Wall Art Studio','Full-stack e-commerce store for custom wall posters, anime art prints, and museum-grade frames.','E-Commerce','Full Stack',workPosterKart,'https://posterkart.vercel.app/'],
+ ['Malware AI','AI + Cybersecurity Platform','Upload malware reports and get AI-powered threat summaries, IoC extractions, and risk scoring.','Python','GenAI',workMalwareAi,'https://malwarereportai.onrender.com/'],
+ ['LiveGuard','Intrusion Detection System','A dual-model intrusion detection pipeline with per-alert SHAP explanations and telemetry.','Cybersecurity','AI/ML',workLiveGuard,'#'],
+ ['Weather Monitoring','Web + Data Analytics','Real-time weather data visualization, satellite atmospheric tracking, and dynamic alerts.','Flask','Data Analysis',workWeather,'#'],
+ ['Portfolio Website','Web Development','Personal portfolio with modern UI, interactive animations, and 3D digital elements.','React','Tailwind CSS',workPortfolio,'#']
 ];
 
 function Button({children,to,outline=false,onClick}){return to?<Link className={'btn '+(outline?'btn-outline':'')} to={to}>{children}<ArrowRight size={17}/></Link>:<button className={'btn '+(outline?'btn-outline':'')} onClick={onClick}>{children}<ArrowRight size={17}/></button>}
 function Header(){const [open,setOpen]=useState(false);return <header className="header"><div className="container nav"><Link to="/" className="brand"><img src={logo} alt="VELANTIS DIGITAL SOLUTIONS"/></Link><button className="mobile-menu" aria-label="Toggle navigation menu" onClick={()=>setOpen(!open)}>{open?<X/>:<Menu/>}</button><nav className={open?'navlinks open':'navlinks'}>{[['/','Home'],['/work','Work'],['/services','Services'],['/process','Process'],['/about','About'],['/contact','Contact'],['/admin','Sign In']].map(([p,n])=><NavLink key={p} to={p} onClick={()=>setOpen(false)} className={({isActive})=>isActive?'active':''}>{n}</NavLink>)}<Button to="/booking">Let's Talk</Button></nav></div></header>}
-function Footer(){return <footer><div className="container footer-grid"><div><img className="footer-logo" src={logo}/><p>Digital solutions for<br/>ambitious businesses.</p></div><div><h4>Quick Links</h4><Link to="/">Home</Link><Link to="/work">Work</Link><Link to="/services">Services</Link><Link to="/process">Process</Link><Link to="/about">About</Link><Link to="/contact">Contact</Link></div><div><h4>Connect With Us</h4><a href="https://instagram.com/velantis.in" target="_blank" rel="noopener noreferrer"><Code2 /> Instagram</a><a href="https://linkedin.com/company/velantis" target="_blank" rel="noopener noreferrer"><Code2 /> LinkedIn</a><a href="https://github.com/velantis" target="_blank" rel="noopener noreferrer"><Code2/> GitHub</a><a href="mailto:hello@velantis.in"><Mail/> Email</a></div><div><h4>Let's Build Together</h4><p>Turn your ideas into real opportunities.</p><Link className="round-arrow" to="/contact"><ArrowUpRight/></Link></div></div><div className="container footer-bottom"><span>© 2026 Velantis. All rights reserved.</span><div><Link to="/privacy">Privacy Policy</Link><Link to="/terms">Terms of Service</Link><Link to="/admin" className="staff-portal-link">Staff Portal</Link></div></div></footer>}
+function Footer(){return <footer><div className="container footer-grid"><div><img className="footer-logo" src={logo}/><p>Digital solutions for<br/>ambitious businesses.</p></div><div><h4>Quick Links</h4><Link to="/">Home</Link><Link to="/work">Work</Link><Link to="/services">Services</Link><Link to="/process">Process</Link><Link to="/about">About</Link><Link to="/contact">Contact</Link></div><div><h4>Connect With Us</h4><a href="https://www.instagram.com/velantisdigitalsolution?exln=MWMyNGl3Mjl1ZWtqNQ==" target="_blank" rel="noopener noreferrer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{display:'inline-block',verticalAlign:'middle',marginRight:'4px'}}><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>Instagram</a><a href="https://linkedin.com/company/velantis" target="_blank" rel="noopener noreferrer"><Code2 /> LinkedIn</a><a href="https://github.com/velantis" target="_blank" rel="noopener noreferrer"><Code2/> GitHub</a><a href="mailto:velantisdigital@gmail.com"><Mail/> Email</a></div><div><h4>Let's Build Together</h4><p>Turn your ideas into real opportunities.</p><Link className="round-arrow" to="/contact"><ArrowUpRight/></Link></div></div><div className="container footer-bottom"><span>© 2026 Velantis. All rights reserved.</span><div><Link to="/privacy">Privacy Policy</Link><Link to="/terms">Terms of Service</Link><Link to="/admin" className="staff-portal-link">Staff Portal</Link></div></div></footer>}
 function Layout({children}){return <><Header/><main>{children}</main><Footer/></>}
 function SectionTitle({eyebrow,title,accent,desc,action}){return <div className="section-title"><div><span className="eyebrow">{eyebrow}</span><h2>{title} {accent&&<em>{accent}</em>}</h2>{desc&&<p>{desc}</p>}</div>{action}</div>}
-function WorkCard({w}){return <article className="work-card"><img src={w[5]} alt=""/><div className="work-body"><div className="work-head"><div><h3>{w[0]}</h3><span>{w[1]}</span></div><span className="circle-arrow"><ArrowUpRight size={16}/></span></div><p>{w[2]}</p><div className="tags"><span>{w[3]}</span><span>{w[4]}</span></div></div></article>}
+function WorkCard({w}){
+  const hasLink = w[6] && w[6] !== '#';
+  const CardContent = (
+    <>
+      <img src={w[5]} alt={w[0]} loading="lazy" style={{ width: '100%', height: 'auto', display: 'block' }}/>
+      <div className="work-body">
+        <div className="work-head">
+          <div>
+            <h3>{w[0]}</h3>
+            <span>{w[1]}</span>
+          </div>
+          <span className="circle-arrow"><ArrowUpRight size={16}/></span>
+        </div>
+        <p>{w[2]}</p>
+        <div className="tags">
+          <span>{w[3]}</span>
+          <span>{w[4]}</span>
+        </div>
+      </div>
+    </>
+  );
+  return hasLink ? (
+    <a href={w[6]} target="_blank" rel="noopener noreferrer" className="work-card" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column', cursor: 'pointer' }}>
+      {CardContent}
+    </a>
+  ) : (
+    <article className="work-card">
+      {CardContent}
+    </article>
+  );
+}
 
 function Home(){return <>
 <section className="hero"><div className="container hero-grid"><div className="hero-copy"><span className="eyebrow">DIGITAL SOLUTIONS STUDIO</span><h1>We Turn Ideas Into <em>Digital Reality.</em></h1><p>Helping businesses build, automate and grow with modern web, AI and digital solutions.</p><div className="hero-actions"><Button to="/booking">Start a Project</Button><Button to="/work" outline>View Our Work <ArrowUpRight size={16}/></Button></div><div className="mini-stats"><div><strong>12+</strong><span>Core Services</span></div><div><strong>100%</strong><span>Code Quality Focus</span></div><div><strong>4</strong><span>Founding Engineers</span></div><div><strong>24h</strong><span>Rapid Response</span></div></div></div><div className="hero-visual"><img src={homeHero} alt="VELANTIS digital engineering workspace" loading="eager" decoding="async"/></div></div></section>
@@ -66,8 +99,8 @@ function Contact(){return <ContactPage services={services} PageHero={PageHero}/>
 function Process(){return <><PageHero eyebrow="OUR PROCESS" title="From Idea to" accent="Impact." desc="A simple, transparent workflow designed to turn your requirements into a practical digital solution."/><section className="section"><div className="container process-page"><ProcessSteps/>{[['Discover','We start by understanding your goals, audience, business context and the problem you want to solve.'],['Design','We turn requirements into a clean experience, information structure and visual direction.'],['Build','We develop the solution with modern technologies, reusable components and responsive design.'],['Test','We check functionality, responsiveness, usability and basic security before delivery.'],['Deliver','We deploy, hand over and provide practical support for the next stage of your digital journey.']].map(([t,d],i)=><div className="process-detail" key={t}><span>0{i+1}</span><div><h2>{t}</h2><p>{d}</p></div></div>)}</div></section><CTA/></>}
 function PageLoader(){return <div style={{minHeight:'60vh',display:'flex',alignItems:'center',justifyContent:'center'}}><div style={{width:'36px',height:'36px',border:'3px solid #ff5a00',borderTopColor:'transparent',borderRadius:'50%',animation:'spin 0.8s linear infinite'}}/></div>}
 function NotFound(){return <div style={{minHeight:'60vh',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:'1rem',padding:'2rem'}}><h1 style={{fontSize:'3rem',fontWeight:800,color:'#ff5a00'}}>404</h1><p style={{fontSize:'1.2rem',color:'#666'}}>Page not found</p><Button to="/">Back to Home</Button></div>}
-function PrivacyPage(){return <><PageHero eyebrow="LEGAL" title="Privacy" accent="Policy."/><section className="section"><div className="container"><p>Privacy policy content coming soon. For questions, contact <a href="mailto:hello@velantis.in">hello@velantis.in</a>.</p></div></section></>}
-function TermsPage(){return <><PageHero eyebrow="LEGAL" title="Terms of" accent="Service."/><section className="section"><div className="container"><p>Terms of service content coming soon. For questions, contact <a href="mailto:hello@velantis.in">hello@velantis.in</a>.</p></div></section></>}
+function PrivacyPage(){return <><PageHero eyebrow="LEGAL" title="Privacy" accent="Policy."/><section className="section"><div className="container"><p>Privacy policy content coming soon. For questions, contact <a href="mailto:velantisdigital@gmail.com">velantisdigital@gmail.com</a>.</p></div></section></>}
+function TermsPage(){return <><PageHero eyebrow="LEGAL" title="Terms of" accent="Service."/><section className="section"><div className="container"><p>Terms of service content coming soon. For questions, contact <a href="mailto:velantisdigital@gmail.com">velantisdigital@gmail.com</a>.</p></div></section></>}
 function App(){return <BrowserRouter><React.Suspense fallback={<PageLoader/>}><Routes><Route path="/admin/*" element={<AdminPage/>}/><Route path="/admin/login" element={<Navigate to="/admin" replace/>}/><Route path="/login" element={<Navigate to="/admin" replace/>}/><Route path="/signin" element={<Navigate to="/admin" replace/>}/><Route path="*" element={<Layout><Routes><Route path="/" element={<Home/>}/><Route path="/work" element={<Work/>}/><Route path="/services" element={<Services/>}/><Route path="/process" element={<Process/>}/><Route path="/about" element={<About/>}/><Route path="/booking" element={<Booking/>}/><Route path="/book" element={<Navigate to="/booking" replace/>}/><Route path="/contact" element={<Contact/>}/><Route path="/privacy" element={<PrivacyPage/>}/><Route path="/terms" element={<TermsPage/>}/><Route path="*" element={<NotFound/>}/></Routes></Layout>}/></Routes></React.Suspense></BrowserRouter>}
 
 createRoot(document.getElementById('root')).render(<App/>);

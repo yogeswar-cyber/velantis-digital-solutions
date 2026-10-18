@@ -265,10 +265,7 @@ export default function Admin() {
       <div style={{ minHeight: '75vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem 1rem' }}>
         <div style={{ width: '100%', maxWidth: '420px', background: '#fff', border: '1px solid #e5e7eb', borderRadius: '14px', padding: '2.5rem', boxShadow: '0 10px 30px rgba(0,0,0,0.06)' }}>
           <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-            <span style={{ color: '#ff5a00', fontSize: '0.8rem', fontWeight: 800, letterSpacing: '2px', textTransform: 'uppercase' }}>
-              INTERNAL PORTAL
-            </span>
-            <h1 style={{ fontSize: '1.8rem', fontWeight: 800, margin: '0.4rem 0 0.5rem', color: '#111827' }}>
+            <h1 style={{ fontSize: '1.8rem', fontWeight: 800, margin: '0 0 0.5rem', color: '#111827' }}>
               VELANTIS Admin
             </h1>
             <p style={{ color: '#6b7280', fontSize: '0.9rem', margin: 0 }}>
@@ -290,7 +287,7 @@ export default function Admin() {
               </label>
               <input
                 type="email"
-                placeholder="admin@velantis.in"
+                placeholder="yogesyogi13@gmail.com"
                 value={loginEmail}
                 onChange={(e) => setLoginEmail(e.target.value)}
                 required
@@ -304,7 +301,7 @@ export default function Admin() {
               </label>
               <input
                 type="password"
-                placeholder="••••••••••••"
+                placeholder="Enter your password"
                 value={loginPassword}
                 onChange={(e) => setLoginPassword(e.target.value)}
                 required

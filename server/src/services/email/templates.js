@@ -41,7 +41,7 @@ function emailLayout({ title, previewText, content }) {
     </div>
     <div class="footer">
       <p style="margin: 0 0 6px 0;"><b>VELANTIS Digital Solutions</b> &bull; Engineering with precision</p>
-      <p style="margin: 0;">hello@velantis.in &bull; +91 98765 43210 &bull; www.velantis.in</p>
+      <p style="margin: 0;">velantisdigital@gmail.com &bull; +91 98765 43210 &bull; www.velantis.in</p>
     </div>
   </div>
 </body>
@@ -105,7 +105,7 @@ ${project.budgetRange ? `Budget: ${project.budgetRange}\n` : ''}${project.timeli
 Our team will review your specifications and get in touch within 24 business hours.
 
 VELANTIS Digital Solutions
-hello@velantis.in | +91 98765 43210
+velantisdigital@gmail.com | +91 98765 43210
   `.trim();
 
   return { subject, html, text };
@@ -199,7 +199,7 @@ Thank you for reaching out to VELANTIS Digital Solutions. We have received your 
 Our team will respond to you at ${contactMessage.email} within 24 hours.
 
 VELANTIS Digital Solutions
-hello@velantis.in
+velantisdigital@gmail.com
   `.trim();
 
   return { subject, html, text };

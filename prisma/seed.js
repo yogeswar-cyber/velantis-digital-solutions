@@ -7,17 +7,21 @@ async function main() {
   console.log('🌱 Starting database seed...');
 
   // 1. Seed Development Admin User
-  const adminEmail = process.env.ADMIN_DEFAULT_EMAIL || 'admin@velantis.in';
-  const rawPassword = process.env.ADMIN_DEFAULT_PASSWORD || 'DevAdmin@Velantis2026!';
+  const adminEmail = process.env.ADMIN_DEFAULT_EMAIL || 'yogesyogi13@gmail.com';
+  const rawPassword = process.env.ADMIN_DEFAULT_PASSWORD || 'VELANTISAURA33';
   const passwordHash = await bcrypt.hash(rawPassword, 10);
 
   const admin = await prisma.user.upsert({
     where: { email: adminEmail },
-    update: {},
+    update: {
+      passwordHash,
+      role: 'ADMIN',
+      name: 'Yogeswar (Admin)',
+    },
     create: {
       email: adminEmail,
       passwordHash,
-      name: 'VELANTIS Dev Admin',
+      name: 'Yogeswar (Admin)',
       role: 'ADMIN',
     },
   });

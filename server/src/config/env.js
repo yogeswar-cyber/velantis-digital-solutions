@@ -52,7 +52,7 @@ export const config = {
     smtpSecure: process.env.SMTP_SECURE === 'true',
     smtpUser: process.env.SMTP_USER || '',
     smtpPass: process.env.SMTP_PASS || '',
-    from: process.env.EMAIL_FROM || 'VELANTIS Digital Solutions <hello@velantis.in>',
-    teamNotificationEmail: process.env.TEAM_NOTIFICATION_EMAIL || 'team@velantis.in',
+    from: process.env.EMAIL_FROM || 'VELANTIS Digital Solutions <velantisdigital@gmail.com>',
+    teamNotificationEmail: process.env.TEAM_NOTIFICATION_EMAIL || 'velantisdigital@gmail.com',
   },
 };
