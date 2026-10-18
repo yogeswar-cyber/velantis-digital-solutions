@@ -316,7 +316,7 @@ export default function Contact({ services = [], PageHero }) {
               <a href="https://linkedin.com/company/velantis" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                 <Code2 />
               </a>
-              <a href="https://github.com/velantis" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+              <a href="https://github.com/velantisdigital" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                 <Code2 />
               </a>
               <a href="mailto:velantisdigital@gmail.com" aria-label="Email">
