@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+﻿import React, { useState, useEffect, useRef } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import {
   CalendarDays,
   ChevronRight,
@@ -42,6 +42,11 @@ const ALLOWED_EXTENSIONS = [
 ];
 
 export default function Booking({ services: fallbackServices = [], ProcessSteps, PageHero, Button }) {
+  const [searchParams] = useSearchParams();
+  const urlDivision = searchParams.get('division'); // 'visual-workz' or null
+  const urlService  = searchParams.get('service');  // slug or null
+  const urlBudget   = searchParams.get('budget');   // price string or null
+  const isVW = urlDivision === 'visual-workz';
   const [step, setStep] = useState(1);
   const [availableServices, setAvailableServices] = useState([]);
   const [loadingServices, setLoadingServices] = useState(true);
@@ -252,6 +257,10 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
     setSubmissionError(null);
 
     try {
+      const _svcName = currentService?.name || formData.serviceId;
+      const _divTag = isVW
+        ? '[DIVISION: VISUAL_WORKZ_ | SERVICE: ' + _svcName + (formData.budgetRange ? ' | PACKAGE: ' + formData.budgetRange : '') + '] '
+        : '';
       const payload = {
         clientName: formData.clientName.trim(),
         clientEmail: formData.clientEmail.trim().toLowerCase(),
@@ -260,9 +269,10 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
         serviceId: formData.serviceId,
         budgetRange: formData.budgetRange,
         timeline: formData.timeline,
-        description: formData.description.trim(),
+        description: _divTag + formData.description.trim(),
         selectedFeatureIds: formData.selectedFeatureIds,
         customRequirements: formData.customRequirements.trim(),
+        division: isVW ? 'VISUAL_WORKZ_' : 'VELANTIS',
       };
 
       // 1. Create project record
@@ -1088,3 +1098,5 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
     </>
   );
 }
+
+

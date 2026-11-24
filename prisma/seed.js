@@ -193,6 +193,113 @@ async function main() {
         { name: 'Basic Vulnerability Assessment', category: 'Testing', description: 'Evaluation of public endpoints and input protections' },
       ],
     },
+    // ==========================================
+    // VISUAL_WORKZ_ — Creative Division Services
+    // ==========================================
+    {
+      name: 'Birthday Shoot',
+      slug: 'birthday-shoot',
+      description: 'Candid event coverage, cake cutting moments, and 25+ color-graded portraits ready in 48h. Recommended price: ₹999.',
+      icon: 'Camera',
+      displayOrder: 13,
+      features: [
+        { name: '25+ Color-Graded Photos', category: 'Deliverables', description: 'High-resolution digital photos delivered via private cloud gallery' },
+        { name: 'Candid & Cake Cutting Coverage', category: 'Shooting', description: 'Complete milestone celebration coverage' },
+        { name: '48-Hour Rapid Delivery', category: 'Timeline', description: 'Fast digital turnaround for instant social sharing' },
+        { name: 'Portrait Frames for Birthday Person', category: 'Portraits', description: 'Dedicated creative solo and family portrait frames' },
+      ],
+    },
+    {
+      name: 'Wedding Reels Shoot',
+      slug: 'wedding-reels-shoot',
+      description: 'Cinematic trending wedding reels, audio sync, aesthetic couple shots, and 4K footage. Recommended price: ₹2,499.',
+      icon: 'Video',
+      displayOrder: 14,
+      features: [
+        { name: '3 Cinematic Trending Reels (9:16)', category: 'Deliverables', description: 'Vertical high-impact reels formatted for Instagram & YouTube Shorts' },
+        { name: 'Audio Sync & Trend Transitions', category: 'Editing', description: 'Paced cuts matched to trending sound tracks' },
+        { name: 'Bride & Groom Aesthetic Sequences', category: 'Cinematography', description: 'Artistic couple highlights with warm natural backlighting' },
+        { name: '4K Footage Delivery', category: 'Quality', description: 'Ultra-high-definition video exports' },
+      ],
+    },
+    {
+      name: 'Engagement Reels Shoot',
+      slug: 'engagement-reels-shoot',
+      description: 'Ring ceremony highlights, couple portraits, and 2 stylized social reels with 48h turnaround. Recommended price: ₹1,999.',
+      icon: 'Sparkles',
+      displayOrder: 15,
+      features: [
+        { name: '2 Stylized Cinematic Reels (9:16)', category: 'Deliverables', description: 'Paced engagement ceremony highlight reels' },
+        { name: 'Ring Ceremony & Exchange Highlights', category: 'Moments', description: 'Macro and detail ring shots with candid family reactions' },
+        { name: 'Romantic Portrait Sequences', category: 'Portraits', description: 'Cinematic couple portraits in natural golden hour light' },
+        { name: 'Rapid 48h Turnaround', category: 'Timeline', description: 'Quick delivery to announce your special milestone online' },
+      ],
+    },
+    {
+      name: 'Car Delivery Shoot',
+      slug: 'car-delivery-shoot',
+      description: 'Showroom unveiling cinematic video, keys handover, automotive b-roll, and high-energy reel. Recommended price: ₹1,499.',
+      icon: 'Film',
+      displayOrder: 16,
+      features: [
+        { name: 'Showroom Unveiling Cinematic Video', category: 'Showcase', description: 'Cover reveal, ribbon ceremony, and spotlight shots' },
+        { name: 'Keys Handover & Family Celebration', category: 'Celebration', description: 'Emotional key handover and celebration with loved ones' },
+        { name: 'Dynamic Automotive B-Roll', category: 'Cinematography', description: 'Gimbal rolls over wheel arches, grill, interior, and lights' },
+        { name: 'High-Energy Transition Edit', category: 'Editing', description: 'Fast-paced transition cuts set to energetic beats' },
+      ],
+    },
+    {
+      name: 'Baby Birthday Shoot',
+      slug: 'baby-birthday-shoot',
+      description: 'Gentle natural light portraits, milestone smiles, family frames, and warm pastel color grading. Recommended price: ₹999.',
+      icon: 'Camera',
+      displayOrder: 17,
+      features: [
+        { name: 'Gentle Natural Light Portraits', category: 'Style', description: 'Soft non-distracting lighting tailored for infants and toddlers' },
+        { name: 'Milestone Smiles & Playful Candids', category: 'Shooting', description: 'Spontaneous laughter, curiosity, and play frames' },
+        { name: 'Tender Family Moments', category: 'Family', description: 'Parents and siblings intimate portraits' },
+        { name: 'Soft Warm Pastel Color Grading', category: 'Grading', description: 'Delicate aesthetic tones for timeless keepsake albums' },
+      ],
+    },
+    {
+      name: 'Shop Opening Shoot',
+      slug: 'shop-opening-shoot',
+      description: 'Ribbon cutting, interior showcase, customer walkthrough, and 1 promotional social reel. Recommended price: ₹1,499.',
+      icon: 'Store',
+      displayOrder: 18,
+      features: [
+        { name: 'Ribbon Cutting & Inauguration Coverage', category: 'Events', description: 'Dignitaries, family, and ribbon ceremony frames' },
+        { name: 'Interior & Product Display Showcase', category: 'Commercial', description: 'Clean wide-angle architectural shots of your store interior' },
+        { name: '1 Promotional Reel for Socials & Google Profile', category: 'Deliverables', description: 'High-energy walkthrough reel to attract neighborhood footfall' },
+        { name: 'Opening Day Crowd & Energy Candids', category: 'Ambiance', description: 'First customer smiles and festive atmosphere' },
+      ],
+    },
+    {
+      name: 'Promotional Shoot',
+      slug: 'promotional-shoot',
+      description: 'Creative brand or product showcase, professional lighting, storyboarded visuals, and ad formats. Recommended price: ₹2,499.',
+      icon: 'Megaphone',
+      displayOrder: 19,
+      features: [
+        { name: 'Creative Brand/Product Showcase', category: 'Commercial', description: 'High-end aesthetic framing designed to convert viewers' },
+        { name: 'Professional Portable Lighting Setup', category: 'Production', description: 'Studio-grade key, fill, and rim light shaping' },
+        { name: 'Storyboard & Script Aligned Visuals', category: 'Direction', description: 'Tailored to your marketing campaign and call-to-action' },
+        { name: 'Multi-Format Deliverables (9:16 & 16:9)', category: 'Deliverables', description: 'Optimized for Instagram Ads, Meta Ads, and Website' },
+      ],
+    },
+    {
+      name: 'Reels Shoot',
+      slug: 'reels-shoot',
+      description: '1 high-impact 60s vertical reel, trend research, fast-cut pacing, music sync, and grading. Recommended price: ₹999.',
+      icon: 'Film',
+      displayOrder: 20,
+      features: [
+        { name: '1 High-Impact 60-Second Vertical Reel (9:16)', category: 'Deliverables', description: 'Polished vertical short-form video' },
+        { name: 'Trend Research & Audio Matching', category: 'Creative', description: 'Selection of viral/trending audio to boost algorithmic reach' },
+        { name: 'Fast-Cut Pacing & Seamless Transitions', category: 'Editing', description: 'Dynamic visual hook within first 3 seconds' },
+        { name: 'Cinematic Color Grading & Captions', category: 'Post-Production', description: 'Vibrant punchy contrast and subtitle placement' },
+      ],
+    },
   ];
 
   // 3. Upsert Services and Features

@@ -24,7 +24,7 @@ export const createProjectSchema = z.object({
   clientPhone: z.string().max(20, 'Phone number too long').optional().or(z.literal('')),
   companyName: z.string().max(100, 'Company name too long').optional().or(z.literal('')),
   serviceId: z.string().min(1, 'Service selection is required'),
-  budgetRange: z.enum(VALID_BUDGET_RANGES).optional().or(z.literal('')),
+  budgetRange: z.string().max(100, 'Budget selection too long').optional().or(z.literal('')),
   timeline: z.enum(VALID_TIMELINES).optional().or(z.literal('')),
   description: z.string().min(10, 'Description must be at least 10 characters').max(5000, 'Description too long'),
   selectedFeatureIds: z.array(z.string()).optional().default([]),
