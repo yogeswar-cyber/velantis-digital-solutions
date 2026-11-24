@@ -60,8 +60,8 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
     clientEmail: '',
     clientPhone: '',
     companyName: '',
-    serviceId: '',
-    budgetRange: '',
+    serviceId: urlService || '',
+    budgetRange: urlBudget || '',
     timeline: '',
     description: '',
     selectedFeatureIds: [],
@@ -114,10 +114,19 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
         if (mounted) {
           if (Array.isArray(data) && data.length > 0) {
             setAvailableServices(data);
-            setFormData((prev) => ({
-              ...prev,
-              serviceId: prev.serviceId || data[0].slug || data[0].id,
-            }));
+            setFormData((prev) => {
+              // If URL has a service slug, try to match it
+              let resolvedId = prev.serviceId;
+              if (urlService) {
+                const matched = data.find(s => s.slug === urlService || s.id === urlService);
+                if (matched) resolvedId = matched.slug || matched.id;
+              }
+              return {
+                ...prev,
+                serviceId: resolvedId || data[0].slug || data[0].id,
+                budgetRange: prev.budgetRange || urlBudget || '',
+              };
+            });
           } else {
             applyFallback();
           }
@@ -367,6 +376,15 @@ export default function Booking({ services: fallbackServices = [], ProcessSteps,
               {/* STEP 1: PROJECT DETAILS */}
               {step === 1 && (
                 <form onSubmit={handleNextFromStep1}>
+                  {isVW && (
+                    <div style={{background:'#0a0a0a',border:'1px solid #c2a46e',borderRadius:'10px',padding:'0.9rem 1.1rem',marginBottom:'1.25rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
+                      <span style={{fontSize:'1.4rem'}}>📸</span>
+                      <div>
+                        <div style={{fontWeight:700,color:'#c2a46e',fontSize:'0.9rem',letterSpacing:'0.08em'}}>VISUAL_WORKZ_ — Creative Division Booking</div>
+                        <div style={{fontSize:'0.8rem',color:'#8e8b84',marginTop:'2px'}}>You are booking a creative shoot. Select the service from the dropdown below.</div>
+                      </div>
+                    </div>
+                  )}
                   <div className="form-row">
                     <label>
                       Your Name *

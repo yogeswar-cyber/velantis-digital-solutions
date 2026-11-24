@@ -143,3 +143,52 @@
   .vw-division-band { flex-direction: column; align-items: flex-start; padding: 0.9rem 1.2rem; }
   .vw-footer-band { flex-direction: column; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Header Navigation — Services Dropdown
+   ═══════════════════════════════════════════════════════════════════════════ */
+.nav-dropdown { position: relative; display: inline-flex; align-items: center; }
+.nav-dropdown-trigger {
+  background: none; border: none; cursor: pointer;
+  font-size: 14px; font-weight: 600; color: inherit;
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 28px 0; position: relative;
+  font-family: inherit;
+  transition: color 0.15s;
+}
+.nav-dropdown-trigger:hover { color: var(--orange); }
+.nav-dropdown-panel {
+  position: absolute; top: calc(100% - 4px); left: 50%;
+  transform: translateX(-50%);
+  background: #fff; border: 1px solid #f0f0f0;
+  border-radius: 14px; padding: 0.5rem;
+  display: flex; flex-direction: column; gap: 0.25rem;
+  min-width: 260px; z-index: 200;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+  animation: dropFade 0.15s ease;
+}
+@keyframes dropFade { from { opacity: 0; transform: translateX(-50%) translateY(-6px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+.nav-dropdown-col {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 0.75rem 1rem; border-radius: 10px;
+  text-decoration: none; color: #111827;
+  transition: background 0.15s;
+}
+.nav-dropdown-col:hover { background: #fff7ed; }
+.nav-dropdown-label { font-weight: 700; font-size: 0.9rem; color: #111827; }
+.nav-dropdown-desc { font-size: 0.75rem; color: #6b7280; font-weight: 400; }
+.nav-dropdown-col.vw-col .nav-dropdown-label { color: #92622a; }
+.nav-dropdown-col.vw-col:hover { background: #fef3e2; }
+.nav-dropdown-divider { height: 1px; background: #f3f4f6; margin: 0 0.5rem; }
+
+/* Mobile dropdown */
+@media (max-width: 900px) {
+  .nav-dropdown { flex-direction: column; align-items: flex-start; width: 100%; }
+  .nav-dropdown-trigger { padding: 10px 0; width: 100%; font-size: 15px; }
+  .nav-dropdown-panel {
+    position: static; transform: none; box-shadow: none;
+    border: 1px solid #f0f0f0; margin: 0.3rem 0 0.5rem;
+    animation: none;
+  }
+}

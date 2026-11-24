@@ -29,6 +29,7 @@ export const createProjectSchema = z.object({
   description: z.string().min(10, 'Description must be at least 10 characters').max(5000, 'Description too long'),
   selectedFeatureIds: z.array(z.string()).optional().default([]),
   customRequirements: z.string().max(2000, 'Custom requirements too long').optional().or(z.literal('')),
+  division: z.string().optional().or(z.literal('')),
 });
 
 export const updateProjectStatusSchema = z.object({
